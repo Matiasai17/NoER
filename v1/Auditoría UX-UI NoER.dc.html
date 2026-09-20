@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EDF1EE;font-family:Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0A7A3F}a:hover{color:#E5203D}
+button:focus-visible,a:focus-visible{outline:2px solid #0A7A3F;outline-offset:2px}
+</style>
+</helmet>
+<div style="max-width:860px;margin:0 auto;padding:40px 20px 80px;box-sizing:border-box;color:#061A0F">
+
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:28px">
+<img src="assets/iso-pin.png" alt="" style="width:34px;height:34px;object-fit:contain">
+<div style="display:flex;flex-direction:column">
+<span style="font:600 14px/1.1 Outfit,sans-serif">NoER · Prototipo pasajero</span>
+<span style="font:400 12px/1.3 Outfit,sans-serif;color:#5A6E62">Revisión de producto · septiembre 2026</span>
+</div>
+</div>
+
+<h1 style="margin:0 0 10px;font:600 40px/1.08 Outfit,sans-serif;letter-spacing:-1.2px;text-wrap:pretty">Auditoría UX/UI y plan de mejoras</h1>
+<p style="margin:0 0 28px;max-width:620px;font:400 16px/1.55 Outfit,sans-serif;color:#5A6E62;text-wrap:pretty">Revisión de los 5 tabs, los dos modos (normal / simple), tema claro y oscuro, y el flujo completo de viaje y encomienda. Abajo: errores ordenados por severidad y propuestas de funcionalidad.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:40px">
+<div style="padding:18px;border-radius:18px;background:#00230D;color:#52FF9C">
+<div style="font:700 34px/1 Outfit,sans-serif;letter-spacing:-1px">5</div>
+<div style="font:500 13px/1.3 Outfit,sans-serif;margin-top:6px;opacity:.85">Críticos<br>rompen o mienten</div>
+</div>
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="font:700 34px/1 Outfit,sans-serif;letter-spacing:-1px">7</div>
+<div style="font:500 13px/1.3 Outfit,sans-serif;margin-top:6px;color:#5A6E62">Importantes<br>fricción real</div>
+</div>
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="font:700 34px/1 Outfit,sans-serif;letter-spacing:-1px">6</div>
+<div style="font:500 13px/1.3 Outfit,sans-serif;margin-top:6px;color:#5A6E62">Menores<br>pulido y copy</div>
+</div>
+<div style="padding:18px;border-radius:18px;background:#52FF9C;color:#00230D">
+<div style="font:700 34px/1 Outfit,sans-serif;letter-spacing:-1px">8</div>
+<div style="font:500 13px/1.3 Outfit,sans-serif;margin-top:6px">Propuestas<br>de producto</div>
+</div>
+</div>
+
+<h2 style="margin:0 0 6px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Errores críticos</h2>
+<p style="margin:0 0 18px;font:400 14px/1.5 Outfit,sans-serif;color:#5A6E62">Bloquean lectura, mienten sobre lo que se puede hacer, o dan información incorrecta.</p>
+
+<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px">
+
+<div style="padding:20px;border-radius:20px;background:#fff;border-left:none">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(229,32,61,.12);color:#E5203D">CRÍTICO</span>
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO EN V2</span>
+<span style="font:600 17px/1.25 Outfit,sans-serif;flex:1;min-width:200px">Texto invisible en Versión simple + modo oscuro</span>
+</div>
+<p style="margin:0 0 6px;font:400 14.5px/1.5 Outfit,sans-serif;color:#5A6E62">Los tres botones del home simple («¿A dónde vas?», «Buscar por voz», WhatsApp) tienen <code style="font:500 13px/1 ui-monospace,monospace;background:#F2F6F3;padding:2px 5px;border-radius:5px">background:#fff</code> fijo, mientras el texto usa la tinta del tema. En oscuro queda blanco sobre blanco: contraste ~1:1, ilegible.</p>
+<p style="margin:0;font:500 13.5px/1.45 Outfit,sans-serif">Arreglo: usar <code style="font:500 13px/1 ui-monospace,monospace;background:#F2F6F3;padding:2px 5px;border-radius:5px">var(--nsurf)</code> en lugar de blanco fijo. Es justo la combinación que más usa el público objetivo del modo simple.</p>
+</div>
+
+<div style="padding:20px;border-radius:20px;background:#fff">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(229,32,61,.12);color:#E5203D">CRÍTICO</span>
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO EN V2</span>
+<span style="font:600 17px/1.25 Outfit,sans-serif;flex:1;min-width:200px">«Elegir en el mapa» no deja mover el mapa</span>
+</div>
+<p style="margin:0 0 6px;font:400 14.5px/1.5 Outfit,sans-serif;color:#5A6E62">La tarjeta promete «Mové el mapa y soltá el pin donde quieras», el encabezado dice «Usá + / − para acercar», y en los hechos la única forma de cambiar el punto es el botón «Otro punto», que rota entre 4 direcciones fijas. Tres mensajes distintos para una interacción que no existe.</p>
+<p style="margin:0;font:500 13.5px/1.45 Outfit,sans-serif">Arreglo: paneo real con arrastre; la dirección se recalcula según el desplazamiento y el pin queda fijo al centro.</p>
+</div>
+
+<div style="padding:20px;border-radius:20px;background:#fff">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(229,32,61,.12);color:#E5203D">CRÍTICO</span>
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO EN V2</span>
+<span style="font:600 17px/1.25 Outfit,sans-serif;flex:1;min-width:200px">Un viaje programado sale a buscar chofer ahora</span>
+</div>
+<p style="margin:0 0 6px;font:400 14.5px/1.5 Outfit,sans-serif;color:#5A6E62">Programás para mañana 22:00, el CTA sigue diciendo «Confirmar viaje» y al tocarlo entra en «Buscando chofer cerca… tardamos menos de un minuto». El usuario cree que pidió un remís para ya.</p>
+<p style="margin:0;font:500 13.5px/1.45 Outfit,sans-serif">Arreglo: CTA «Programar viaje · $X», salto directo al estado reservado, y el paso «Chofer asignado» pasa a «Reservado».</p>
+</div>
+
+<div style="padding:20px;border-radius:20px;background:#fff">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(229,32,61,.12);color:#E5203D">CRÍTICO</span>
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO EN V2</span>
+<span style="font:600 17px/1.25 Outfit,sans-serif;flex:1;min-width:200px">El desglose de precio no da la suma</span>
+</div>
+<p style="margin:0 0 6px;font:400 14.5px/1.5 Outfit,sans-serif;color:#5A6E62">Bajada $1.200 + distancia $2.432 + tiempo $1.018 = $4.650, pero el total mostrado es $4.850. En un servicio donde «sin sorpresas en el precio» es la promesa de marca, una resta que no cierra es lo peor que puede pasar. Además el desglose vive escondido en Cuenta, no donde se decide (pantalla de opciones).</p>
+<p style="margin:0;font:500 13.5px/1.45 Outfit,sans-serif">Arreglo: ítems que suman exacto y acceso «Ver cómo se calcula» desde la pantalla de confirmación.</p>
+</div>
+
+<div style="padding:20px;border-radius:20px;background:#fff">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(229,32,61,.12);color:#E5203D">CRÍTICO</span>
+<span style="font:700 10.5px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO EN V2</span>
+<span style="font:600 17px/1.25 Outfit,sans-serif;flex:1;min-width:200px">Cancelar es irreversible y sin confirmación</span>
+</div>
+<p style="margin:0 0 6px;font:400 14.5px/1.5 Outfit,sans-serif;color:#5A6E62">«Cancelar pedido» y «Cancelar viaje» ejecutan al primer toque, sin diálogo, sin decir si hay costo y sin deshacer. Con el chofer ya en camino es una acción con consecuencias para dos personas.</p>
+<p style="margin:0;font:500 13.5px/1.45 Outfit,sans-serif">Arreglo: hoja de confirmación con motivo y aviso de posible cargo.</p>
+</div>
+
+</div>
+
+<h2 style="margin:0 0 6px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Importantes</h2>
+<p style="margin:0 0 18px;font:400 14px/1.5 Outfit,sans-serif;color:#5A6E62">No rompen el flujo, pero generan fricción, callejones sin salida o desconfianza.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:40px">
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">Búsqueda sin resultados = pantalla muerta</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">Si escribís algo que no está en los 6 lugares precargados, la lista queda vacía y no hay salida ni sugerencia. Ahora aparece un estado vacío con «Elegir en el mapa».</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">El badge «2» de Avisos nunca se apaga</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">Estaba escrito a mano en el tab y no cambiaba al leer los avisos (que además son 3). Ahora cuenta no leídos y se limpia al entrar.</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">Botones que no hacen nada</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">«Compartir viaje», «Cargar saldo», «Medios de pago», «Cerrar sesión» y los CTA de los acordeones de Cuenta eran decorativos. Ahora cerrar sesión, cargar saldo (con movimiento real) y compartir responden.</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">Se pierde el viaje en curso al cambiar de tab</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">Con el chofer en camino, ir a Billetera o Avisos hace desaparecer todo rastro del viaje. Agregamos una barra persistente sobre la navegación que vuelve al seguimiento.</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">CORREGIDO</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">Accesibilidad: íconos sin nombre y sin foco visible</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">Volver, modo oscuro, zoom, centrar y micrófono son botones sin etiqueta accesible; ningún control mostraba estado de foco. Se agregaron <code style="font:500 12.5px/1 ui-monospace,monospace;background:#F2F6F3;padding:2px 5px;border-radius:5px">aria-label</code> y anillo de foco.</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:rgba(184,121,26,.14);color:#B8791A">PENDIENTE</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">Login sin verificación real</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">Se entra con sólo tipear 8 dígitos, y después Cuenta muestra la insignia «TEL. VERIFICADO». Falta el paso de código SMS: es el único freno contra cuentas falsas, y en un pueblo la reputación del servicio depende de eso.</p>
+</div>
+
+<div style="padding:18px;border-radius:18px;background:#fff">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:5px 9px;border-radius:20px;background:rgba(184,121,26,.14);color:#B8791A">PENDIENTE</span>
+<span style="font:600 15.5px/1.2 Outfit,sans-serif;flex:1">La encomienda no pide lo que una encomienda necesita</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.5 Outfit,sans-serif;color:#5A6E62">El flujo de envío es idéntico al de viaje: no pregunta quién recibe, su teléfono, qué se manda, ni quién paga. El cadete llega a una dirección sin saber a quién tocar el timbre. Ver propuesta 1.</p>
+</div>
+
+</div>
+
+<h2 style="margin:0 0 6px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Menores y de detalle</h2>
+<div style="display:flex;flex-direction:column;gap:2px;margin-bottom:40px;background:#fff;border-radius:18px;padding:6px 20px">
+<div style="padding:14px 0;border-bottom:1px solid rgba(6,26,15,.08);display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#0A7A3F;flex:none;width:76px">Corregido</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">Placeholder equivocado en envío.</strong> En el home dice «¿A dónde lo llevamos?» pero al entrar al buscador vuelve a «¿A dónde vas?».</span>
+</div>
+<div style="padding:14px 0;border-bottom:1px solid rgba(6,26,15,.08);display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#0A7A3F;flex:none;width:76px">Corregido</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">Tab huérfano al activar Versión simple.</strong> Si estabas en Billetera o Avisos, el tab desaparece de la barra pero la pantalla sigue abierta, sin nada seleccionado.</span>
+</div>
+<div style="padding:14px 0;border-bottom:1px solid rgba(6,26,15,.08);display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#0A7A3F;flex:none;width:76px">Corregido</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">El tirador de la hoja no tira.</strong> Tiene cursor de arrastre y siempre vuelve a su lugar. Ahora colapsa y expande de verdad para dejar ver el mapa.</span>
+</div>
+<div style="padding:14px 0;border-bottom:1px solid rgba(6,26,15,.08);display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#0A7A3F;flex:none;width:76px">Corregido</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">La calificación no se usa.</strong> Podés tocar «Listo» con 0 estrellas y nada cambia. Ahora el CTA refleja el estado y se puede omitir explícitamente.</span>
+</div>
+<div style="padding:14px 0;border-bottom:1px solid rgba(6,26,15,.08);display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#B8791A;flex:none;width:76px">Pendiente</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">Fechas y horarios inventados e inconsistentes.</strong> «Hoy · vie 12» contra pedidos de «Hoy 20:06» y franjas que arrancan siempre 21:45. Deberían derivarse de la hora real.</span>
+</div>
+<div style="padding:14px 0;display:flex;gap:14px;align-items:flex-start">
+<span style="font:700 13px/1.5 Outfit,sans-serif;color:#B8791A;flex:none;width:76px">Pendiente</span>
+<span style="font:400 14px/1.5 Outfit,sans-serif;flex:1"><strong style="font-weight:600">El origen no es editable.</strong> Siempre «Mi ubicación actual»: no se puede pedir un remís para otra persona ni corregir un GPS impreciso, que en calles de tierra pasa seguido.</span>
+</div>
+</div>
+
+<h2 style="margin:0 0 6px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Propuestas de producto</h2>
+<p style="margin:0 0 18px;font:400 14px/1.5 Outfit,sans-serif;color:#5A6E62">Ordenadas por impacto sobre esfuerzo. Las tres primeras cambian el negocio, no sólo la pantalla.</p>
+
+<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px">
+
+<div style="padding:22px;border-radius:20px;background:#00230D;color:#EAFBF1">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#52FF9C">01</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Flujo propio de encomienda</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#52FF9C;color:#00230D">EN V2</span>
+</div>
+<p style="margin:0 0 10px;font:400 14.5px/1.55 Outfit,sans-serif;opacity:.82">Después de elegir dirección de entrega: quién recibe (nombre + teléfono), qué se manda (sobre / bolsa / caja / otro con foto opcional), si hay que pagar algo al retirar, y quién abona el envío. El cadete recibe todo eso en su pantalla y el destinatario un enlace de seguimiento por WhatsApp sin instalar nada.</p>
+<p style="margin:0;font:600 13.5px/1.4 Outfit,sans-serif;color:#52FF9C">Por qué: es el diferencial frente a pedir un remís por teléfono, y hoy la app no lo tiene.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">02</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Estados de «no hay servicio»</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">EN V2</span>
+</div>
+<p style="margin:0 0 10px;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Hoy el prototipo siempre encuentra chofer. En Nogoyá a las 3 de la mañana, o un domingo de lluvia, no va a pasar. La v2 suma: sin choferes disponibles con «avisame cuando haya» y teléfono de la central, demora mayor a lo estimado, chofer que cancela con reasignación automática, y barra de sin conexión. Se prueban desde la tarjeta «Modo demo» al final de Cuenta.</p>
+<p style="margin:0;font:600 13.5px/1.4 Outfit,sans-serif;color:#0A7A3F">Por qué: el peor momento del producto hoy no está diseñado.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">03</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Seguridad del viaje en un solo lugar</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">EN V2</span>
+</div>
+<p style="margin:0 0 10px;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Un botón de seguridad en la pantalla de viaje que agrupa: compartir recorrido en vivo por WhatsApp con un enlace que expira al llegar, contactos de confianza guardados, llamada a 911 y «no es mi chofer». Reemplaza al «Compartir viaje» suelto que había antes.</p>
+<p style="margin:0;font:600 13.5px/1.4 Outfit,sans-serif;color:#0A7A3F">Por qué: es lo primero que mira una usuaria antes de subirse de noche.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">04</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Repetir último viaje en un toque</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:rgba(184,121,26,.14);color:#B8791A">EN PAUSA</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">EN V2</span>
+</div>
+<p style="margin:0;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">En un pueblo los recorridos se repiten: casa → trabajo → casa. Una tarjeta «Repetir: Chacabuco 1932, $5.429» arriba del buscador convierte el pedido de 4 toques en 1. Se implementó y luego se quitó a pedido: queda como propuesta para retomar más adelante.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">05</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Versión simple como diseño, no como zoom</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">EN V2</span>
+</div>
+<p style="margin:0;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Salió el <code style="font:500 13px/1 ui-monospace,monospace;background:#F2F6F3;padding:2px 5px;border-radius:5px">zoom: 1.25</code> que agrandaba parejo lo importante y lo accesorio. Ahora hay una escala propia en variables CSS (cuerpo 18px, buscador 21px, botones de 64px, etiquetas de la barra 13px) y un botón «Llamar a la central» de tamaño real para quien no quiere tocar nada más. Para el programador: los tamaños viven en <code style="font:500 13px/1 ui-monospace,monospace;background:#F2F6F3;padding:2px 5px;border-radius:5px">--nsbody / --nsinput / --nssub / --nsrow / --nstab</code>.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">06</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Precio cerrado y visible antes del destino</span>
+</div>
+<p style="margin:0;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Mostrar en el home una franja «viajes dentro del casco urbano desde $3.200» y, al elegir vehículo, marcar explícitamente «precio cerrado, no cambia por tráfico ni espera de hasta 3 min». Es la objeción número uno de quien viene de arreglar por teléfono.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">07</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Comprobante y recibo por viaje</span>
+<span style="font:700 10px/1 Outfit,sans-serif;letter-spacing:.6px;padding:6px 10px;border-radius:20px;background:#E6FFF0;color:#0A7A3F">EN V2</span>
+</div>
+<p style="margin:0;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Comprobante completo (número, ruta, chofer, desglose y total) al terminar el viaje y en cada pedido del historial, con «Descargar PDF» y «Enviar por WhatsApp». Para quien viaja por trabajo es lo que hace que use la app en vez de llamar, y abre la puerta a cuentas empresa.</p>
+</div>
+
+<div style="padding:22px;border-radius:20px;background:#fff">
+<div style="display:flex;gap:12px;align-items:baseline;margin-bottom:8px">
+<span style="font:700 22px/1 Outfit,sans-serif;color:#0A7A3F">08</span>
+<span style="font:600 19px/1.25 Outfit,sans-serif;flex:1">Onboarding de permisos honesto</span>
+</div>
+<p style="margin:0;font:400 14.5px/1.55 Outfit,sans-serif;color:#5A6E62">Antes de pedir ubicación, notificaciones y micrófono, una pantalla que diga para qué sirve cada uno y qué pasa si decís que no. Hoy el buscador por voz «escucha» sin haber pedido nada.</p>
+</div>
+
+</div>
+
+<h2 style="margin:0 0 14px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Si hay que elegir tres cosas</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<div style="padding:20px;border-radius:18px;background:#52FF9C;color:#00230D">
+<div style="font:700 13px/1 Outfit,sans-serif;letter-spacing:.6px;margin-bottom:8px">PRIMERO</div>
+<p style="margin:0;font:500 15px/1.45 Outfit,sans-serif">Arreglar el desglose de precio y mostrarlo al confirmar. La confianza en el número es el producto.</p>
+</div>
+<div style="padding:20px;border-radius:18px;background:#fff">
+<div style="font:700 13px/1 Outfit,sans-serif;letter-spacing:.6px;margin-bottom:8px;color:#5A6E62">SEGUNDO</div>
+<p style="margin:0;font:500 15px/1.45 Outfit,sans-serif">Verificación por SMS antes de dejar entrar: es lo único que frena cuentas falsas.</p>
+</div>
+<div style="padding:20px;border-radius:18px;background:#fff">
+<div style="font:700 13px/1 Outfit,sans-serif;letter-spacing:.6px;margin-bottom:8px;color:#5A6E62">TERCERO</div>
+<p style="margin:0;font:500 15px/1.45 Outfit,sans-serif">Derivar fechas, horarios y precios de datos reales: hoy son fijos en el prototipo.</p>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:1200}}"></script>
+</body>
+</html>

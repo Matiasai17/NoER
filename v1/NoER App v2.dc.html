@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#EDF1EE;font-family:Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0A7A3F}a:hover{color:#E5203D}
+@keyframes noerUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes noerFade{from{opacity:0}to{opacity:1}}
+@keyframes noerPulse{0%{transform:scale(.75);opacity:.4}80%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+@keyframes noerDash{to{stroke-dashoffset:-48}}
+@keyframes noerCarX{from{transform:translateX(-70px)}to{transform:translateX(470px)}}
+@keyframes noerCarXr{from{transform:translateX(470px) scaleX(-1)}to{transform:translateX(-70px) scaleX(-1)}}
+@keyframes noerCarY{from{transform:translateY(-70px)}to{transform:translateY(520px)}}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #0A7A3F;outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:18px;padding:28px 16px 44px;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:12px;max-width:402px;width:100%">
+<img src="assets/iso-pin.png" alt="NoER" style="width:32px;height:32px;display:block;object-fit:contain">
+<div style="display:flex;flex-direction:column">
+<span style="font:600 14px/1.1 Outfit,sans-serif;color:#061A0F">NoER · Prototipo pasajero</span>
+<span style="font:400 12px/1.3 Outfit,sans-serif;color:#5A6E62">PWA de movilidad y cadetería en Nogoyá</span>
+</div>
+</div>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ dark }}" hint-size="402px,874px">
+<div ref="{{ rootRef }}" style="position:relative;height:874px;overflow:hidden;background:var(--nbg,#fff);font-family:Outfit,sans-serif;color:var(--nink,#061A0F)">
+
+<sc-if value="{{ notLoggedIn }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;z-index:50;background:var(--nbg,#fff);display:flex;flex-direction:column;padding:56px 26px 34px;box-sizing:border-box;animation:noerFade .2s ease both">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+<img src="assets/iso-pin.png" alt="NoER" style="width:56px;height:56px;object-fit:contain">
+<h1 style="margin:0;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.5px;color:var(--nink,#061A0F)">Bienvenido a NoER</h1>
+<p style="margin:0;font:400 14px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62);text-align:center;max-width:260px">Movilidad y cadetería en Nogoyá, a un toque de distancia.</p>
+</div>
+
+<sc-if value="{{ isLoginOptions }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<button onClick="{{ onGoogleLogin }}" style="width:100%;height:52px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:var(--nsurf,#fff);color:var(--nink,#061A0F);font:600 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"></path><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"></path><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.29-1.72V4.95H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.05l3.01-2.33z"></path><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.59-2.59C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"></path></svg>
+Continuar con Google
+</button>
+<button onClick="{{ onFacebookLogin }}" style="width:100%;height:52px;display:flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:16px;background:#1877F2;color:#fff;font:600 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="#fff"><path d="M18 9a9 9 0 1 0-10.4 8.89v-6.29H5.31V9h2.29V7.02c0-2.26 1.35-3.51 3.41-3.51.99 0 2.02.18 2.02.18v2.22h-1.14c-1.12 0-1.47.7-1.47 1.42V9h2.5l-.4 2.6h-2.1v6.29A9 9 0 0 0 18 9z"></path></svg>
+Continuar con Facebook
+</button>
+<div style="display:flex;align-items:center;gap:10px;margin:6px 0"><span style="flex:1;height:1px;background:var(--nline,rgba(6,26,15,.1))"></span><span style="font:400 12px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">o</span><span style="flex:1;height:1px;background:var(--nline,rgba(6,26,15,.1))"></span></div>
+<button onClick="{{ onShowPhone }}" style="width:100%;height:52px;display:flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:16px;background:var(--nink,#061A0F);color:var(--nsurf,#fff);font:600 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2"></rect><path d="M11 18h2"></path></svg>
+Continuar con número de teléfono
+</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLoginPhone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px;animation:noerUp .2s ease both">
+<div style="display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="font:600 15px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">+54</span>
+<span style="width:1px;height:20px;background:var(--nline2,rgba(6,26,15,.18))"></span>
+<input value="{{ loginPhone }}" onChange="{{ onPhoneChange }}" placeholder="343 000 0000" inputMode="tel" aria-label="Número de teléfono" style="flex:1;border:none;background:transparent;outline:none;font:600 16px/1 Outfit,sans-serif;color:var(--nink,#061A0F);width:100%">
+</div>
+<button onClick="{{ onPhoneContinue }}" disabled="{{ phoneDisabled }}" style="{{ phoneCtaStyle }}">Continuar</button>
+<button onClick="{{ onBackToOptions }}" style="width:100%;height:44px;border:none;background:transparent;color:var(--nmut,#5A6E62);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Volver</button>
+</div>
+</sc-if>
+<p style="margin:14px 0 0;font:400 11.5px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62);text-align:center">Al continuar aceptás los <a href="#">Términos</a> y la <a href="#">Privacidad</a> de NoER.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ needsModeChoice }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:49;background:var(--nbg,#fff);display:flex;flex-direction:column;justify-content:center;gap:16px;padding:56px 26px 40px;box-sizing:border-box;animation:noerFade .2s ease both">
+<h1 style="margin:0;font:600 28px/1.15 Outfit,sans-serif;letter-spacing:-.5px;text-align:center">¿Cómo querés ver NoER?</h1>
+<p style="margin:0 0 6px;font:400 15px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62);text-align:center">Podés cambiarlo cuando quieras desde Cuenta.</p>
+<button onClick="{{ elegirNormal }}" style="width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:20px;border:none;border-radius:20px;background:#52FF9C;cursor:pointer;text-align:left;color:#00230D">
+<span style="font:600 19px/1.2 Outfit,sans-serif">Versión normal</span>
+<span style="font:400 14px/1.4 Outfit,sans-serif">Mapa, envíos y viajes programados.</span>
+</button>
+<button onClick="{{ elegirSimple }}" style="width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:22px 20px;border:1.5px solid var(--nline2,rgba(6,26,15,.18));border-radius:20px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="font:700 24px/1.2 Outfit,sans-serif">Versión simple</span>
+<span style="font:500 17px/1.35 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Letra grande, pocos botones y sólo pedir remís.</span>
+</button>
+</div>
+</sc-if>
+
+<div ref="{{ mapRef }}" onWheel="{{ onWheel }}" onPointerDown="{{ onMapDown }}" style="position:absolute;inset:0;background:var(--nmapbase,#E9EFE9);transform-origin:50% 45%;touch-action:none;cursor:grab;transition:transform .28s cubic-bezier(.32,.72,0,1)">
+<svg viewBox="0 0 402 874" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+<rect x="-200" y="-200" width="802" height="1274" fill="var(--nmapbase,#E9EFE9)"></rect>
+<g transform="rotate(-18 201 437)">
+<g stroke="var(--nroad,#fff)" stroke-width="13" stroke-linecap="square" fill="none">
+<path d="M-160 40H562M-160 170H562M-160 300H562M-160 560H562M-160 690H562M-160 820H562"></path>
+<path d="M-30 -160V1034M100 -160V1034M230 -160V1034M360 -160V1034M490 -160V1034"></path>
+</g>
+<path d="M-160 430H562" stroke="var(--nroadmain,#FFF8E6)" stroke-width="24" fill="none"></path>
+<path d="M230 -160V1034" stroke="var(--nroadmain,#FFF8E6)" stroke-width="22" fill="none"></path>
+<rect x="100" y="300" width="130" height="130" fill="var(--npark,#CFE6D5)"></rect>
+<rect x="240" y="565" width="115" height="120" fill="var(--nblock,#E2EAE2)"></rect>
+<text x="-140" y="425" fill="var(--nlabel,#9BAFA1)" style="font:600 13px Outfit,sans-serif">Av. Rivadavia</text>
+<text x="-140" y="165" fill="var(--nlabel,#9BAFA1)" style="font:500 12px Outfit,sans-serif">Alberdi</text>
+<text x="-140" y="685" fill="var(--nlabel,#9BAFA1)" style="font:500 12px Outfit,sans-serif">Chacabuco</text>
+<text x="118" y="372" fill="var(--nlabelpark,#6E9B7E)" style="font:600 13px Outfit,sans-serif">Plaza<tspan x="118" dy="16">Libertad</tspan></text>
+<text x="243" y="-40" fill="var(--nlabel,#9BAFA1)" transform="rotate(90 243 -40)" style="font:600 12px Outfit,sans-serif">Mitre</text>
+<path d="M100 690V560H230V430H360V170" stroke="var(--nroute,#00230D)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 11" fill="none" style="animation:noerDash 2.6s linear infinite"></path>
+<circle cx="100" cy="690" r="8" fill="var(--nink,#061A0F)" stroke="var(--nsurf,#fff)" stroke-width="3"></circle>
+<g transform="rotate(18 360 170) translate(360 170) scale(0.044) translate(-500 -1000)">
+<path d="M511.26,126.71c-149.5-6.83-272.84,121.03-272.84,269.03,0,44.27,8.93,81.86,28.4,118.37,13.58,25.44,25.35,48.18,41.54,81.06l149.4,250.5c16.39,35.01,66.17,35.01,82.56,0l24.92-37.27c61.47-91.93,117.23-196.3,166.54-295.29.24-.49.48-.96.73-1.45,19.04-38.26,28.97-81.85,26.89-127.94-6.01-133.67-114.48-250.9-248.14-257h0ZM499.05,518.77c-56.36,0-102.04-52.58-102.04-117.44s45.68-117.44,102.04-117.44,102.04,52.58,102.04,117.44-45.68,117.44-102.04,117.44Z" fill="#E5203D"></path>
+</g>
+</g>
+</svg>
+
+<div style="position:absolute;inset:-120px;transform:rotate(-18deg);pointer-events:none">
+<sc-for list="{{ autos }}" as="c" hint-placeholder-count="4">
+<div style="{{ c.wrap }}">
+<div style="display:flex;align-items:center;justify-content:center;transform:rotate(18deg);color:var(--nink,#061A0F);filter:drop-shadow(0 3px 6px rgba(0,0,0,.3))">
+<span style="{{ c.iconStyle }}">{{ c.icon }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+
+<sc-if value="{{ ocultarMapa }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--nbg,#fff)"></div>
+</sc-if>
+
+<sc-if value="{{ mostrarControlesMapa }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:0;right:0;top:0;height:340px;background:linear-gradient(180deg,var(--ngrad,rgba(0,35,13,.18)),rgba(0,35,13,0));pointer-events:none"></div>
+</sc-if>
+
+<sc-if value="{{ enFlujo }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:16px;right:16px;top:56px;display:flex;align-items:center;gap:10px">
+<sc-if value="{{ mostrarVolver }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ volver }}" aria-label="Volver" style="width:42px;height:42px;border:none;border-radius:14px;background:var(--nglass,rgba(255,255,255,.94));box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;color:var(--nink,#061A0F);display:flex;align-items:center;justify-content:center;flex:none">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 6l-6 6 6 6"></path></svg>
+</button>
+</sc-if>
+<sc-if value="{{ mostrarLogo }}" hint-placeholder-val="{{ true }}">
+<div style="{{ pinHeaderStyle }}"></div>
+</sc-if>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;height:42px;padding:0 14px;border-radius:14px;background:var(--nglass,rgba(255,255,255,.94));box-shadow:0 4px 14px rgba(0,0,0,.1);backdrop-filter:blur(10px)">
+<span style="font:600 13.5px/1.15 Outfit,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ headerTitulo }}</span>
+<span style="font:400 11px/1.2 Outfit,sans-serif;color:var(--nmut,#5A6E62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ headerSub }}</span>
+</div>
+<button onClick="{{ toggleDark }}" aria-label="Cambiar tema claro u oscuro" style="width:42px;height:42px;border:none;border-radius:14px;background:var(--nglass,rgba(255,255,255,.94));box-shadow:0 4px 14px rgba(0,0,0,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--nink,#061A0F);flex:none">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8.2 8.2 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"></path></svg>
+</button>
+</div>
+<sc-if value="{{ mostrarControlesMapa }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;right:16px;top:112px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:var(--nglass,rgba(255,255,255,.94));box-shadow:0 4px 14px rgba(0,0,0,.12)">
+<button onClick="{{ zoomIn }}" aria-label="Acercar el mapa" style="width:42px;height:42px;border:none;background:transparent;cursor:pointer;color:var(--nink,#061A0F);font:600 20px/1 Outfit,sans-serif">+</button>
+<span style="height:1px;background:var(--nline2,rgba(6,26,15,.18))"></span>
+<button onClick="{{ zoomOut }}" aria-label="Alejar el mapa" style="width:42px;height:42px;border:none;background:transparent;cursor:pointer;color:var(--nink,#061A0F);font:600 20px/1 Outfit,sans-serif">−</button>
+<span style="height:1px;background:var(--nline2,rgba(6,26,15,.18))"></span>
+<button onClick="{{ centrar }}" aria-label="Centrar en mi ubicación" style="width:42px;height:42px;border:none;background:transparent;cursor:pointer;color:var(--nink,#061A0F);display:flex;align-items:center;justify-content:center">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2.2"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>
+</button>
+</div>
+</sc-if>
+<sc-if value="{{ esMapaPick }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:50%;top:300px;transform:translate(-50%,-100%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:2px">
+<svg viewBox="0 0 1000 1000" style="width:46px;height:46px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))"><path d="M511.26,126.71c-149.5-6.83-272.84,121.03-272.84,269.03,0,44.27,8.93,81.86,28.4,118.37,13.58,25.44,25.35,48.18,41.54,81.06l149.4,250.5c16.39,35.01,66.17,35.01,82.56,0l24.92-37.27c61.47-91.93,117.23-196.3,166.54-295.29.24-.49.48-.96.73-1.45,19.04-38.26,28.97-81.85,26.89-127.94-6.01-133.67-114.48-250.9-248.14-257h0ZM499.05,518.77c-56.36,0-102.04-52.58-102.04-117.44s45.68-117.44,102.04-117.44,102.04,52.58,102.04,117.44-45.68,117.44-102.04,117.44Z" fill="#E5203D"></path></svg>
+<span style="width:10px;height:10px;border-radius:50%;background:rgba(0,0,0,.22)"></span>
+</div>
+</sc-if>
+</sc-if>
+
+<div ref="{{ sheetRef }}" style="position:absolute;left:0;right:0;bottom:72px;border-radius:26px 26px 0 0;background:var(--nsurf,#fff);box-shadow:0 -12px 40px rgba(0,0,0,.16);max-height:660px;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.32,.72,0,1)">
+<sc-if value="{{ mostrarExtrasHome }}" hint-placeholder-val="{{ true }}">
+<div onPointerDown="{{ onGrab }}" onClick="{{ toggleSheet }}" style="padding:10px 0 4px;display:flex;justify-content:center;cursor:grab;touch-action:none">
+<div style="width:44px;height:5px;border-radius:3px;background:var(--nline2,rgba(6,26,15,.18))"></div>
+</div>
+</sc-if>
+<div style="padding:6px 18px 22px;overflow:auto">
+
+<sc-if value="{{ esHome }}" hint-placeholder-val="{{ true }}">
+<div style="animation:noerUp .26s ease both">
+<sc-if value="{{ mostrarExtrasHome }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:6px;padding:4px;border-radius:16px;background:var(--nchip,#F2F6F3);margin-bottom:14px">
+<button onClick="{{ setViaje }}" style="{{ tabViajeStyle }}">Viaje</button>
+<button onClick="{{ setEnvio }}" style="{{ tabEnvioStyle }}">Envío</button>
+</div>
+</sc-if>
+<sc-if value="{{ esSimple }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:center;min-height:480px;padding:10px 4px 6px">
+<div style="flex:1;width:100%;display:flex;align-items:center;justify-content:center">
+<div onClick="{{ irDestino }}" style="width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:10px;min-height:70px;padding:0 18px;border:2px solid var(--nink,#061A0F);border-radius:24px;background:var(--nsurf,#fff);box-shadow:0 2px 12px rgba(0,0,0,.07);cursor:pointer">
+<span style="flex:1;text-align:center;font:600 21px/1.2 Outfit,sans-serif;color:var(--nink,#061A0F)">¿A dónde vas?</span>
+<button onClick="{{ onHomeVoiceSearch }}" aria-label="Buscar por voz" style="{{ homeMicButtonStyle }}">
+<span style="{{ homeMicPulseStyle }}"></span>
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="position:relative"><rect x="9" y="2" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+</button>
+</div>
+</div>
+<div style="display:flex;justify-content:center;padding-top:10px">
+<button onClick="{{ contactarSoporte }}" aria-label="Escribir por WhatsApp" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;border-radius:50%;background:transparent;cursor:pointer">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.25 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"></path></svg>
+</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ mostrarExtrasHome }}" hint-placeholder-val="{{ true }}">
+<h2 style="margin:0 0 12px;font:600 26px/1.15 Outfit,sans-serif;letter-spacing:-.5px">{{ homeTitulo }}</h2>
+<div style="display:flex;gap:10px">
+<button onClick="{{ irDestino }}" style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:58px;padding:0 16px;border:none;border-radius:16px;background:var(--nchip,#F2F6F3);cursor:pointer;text-align:left;font:600 17px/1 Outfit,sans-serif;color:var(--nink,#061A0F)">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+{{ homePlaceholder }}
+</button>
+<button onClick="{{ onHomeVoiceSearch }}" style="{{ homeMicButtonStyle }}">
+<span style="{{ homeMicPulseStyle }}"></span>
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="position:relative"><rect x="9" y="2" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+</button>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+<button onClick="{{ irCasa }}" style="display:flex;align-items:center;gap:10px;padding:14px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"></path></svg>
+<span style="display:flex;flex-direction:column"><span style="font:600 14px/1.2 Outfit,sans-serif">Casa</span><span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Chacabuco 1932</span></span>
+</button>
+<button onClick="{{ irTrabajo }}" style="display:flex;align-items:center;gap:10px;padding:14px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="8" width="18" height="12" rx="2"></rect><path d="M9 8V6h6v2"></path></svg>
+<span style="display:flex;flex-direction:column"><span style="font:600 14px/1.2 Outfit,sans-serif">Trabajo</span><span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Av. Rivadavia 250</span></span>
+</button>
+</div>
+
+<button onClick="{{ toggleProgramar }}" style="width:100%;margin-top:10px;display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px dashed var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>
+<span style="flex:1;font:600 15px/1.2 Outfit,sans-serif">Programar viaje</span>
+<span style="font:500 13px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ programarResumen }}</span>
+<span style="{{ caretProgramar }}">⌄</span>
+</button>
+<sc-if value="{{ abiertoProgramar }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:14px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<div style="display:flex;gap:6px;margin-bottom:12px">
+<sc-for list="{{ dias }}" as="d" hint-placeholder-count="2">
+<button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+</sc-for>
+</div>
+<span style="display:block;font:500 12px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62);margin-bottom:8px">Horario (cada 15 minutos)</span>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ horarios }}" as="h" hint-placeholder-count="8">
+<button onClick="{{ h.pick }}" style="{{ h.style }}">{{ h.label }}</button>
+</sc-for>
+</div>
+<button onClick="{{ confirmarProgramar }}" style="width:100%;margin-top:12px;height:46px;border:none;border-radius:14px;background:#52FF9C;color:#00230D;font:700 14.5px/1 Outfit,sans-serif;cursor:pointer">{{ ctaProgramar }}</button>
+</div>
+</sc-if>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ esDestino }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both">
+<div style="display:flex;gap:12px;padding:14px;border-radius:18px;background:var(--nchip,#F2F6F3)">
+<div style="display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:4px">
+<span style="width:9px;height:9px;border-radius:50%;background:var(--nink,#061A0F)"></span>
+<span style="width:2px;flex:1;background:var(--nline2,rgba(6,26,15,.18))"></span>
+<span style="width:9px;height:9px;border-radius:2px;background:#E5203D"></span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div style="font:500 var(--nsbody,15px)/1.3 Outfit,sans-serif;padding-bottom:8px;border-bottom:1px solid var(--nline,rgba(6,26,15,.1))">{{ origen }}</div>
+<div style="display:flex;align-items:center;gap:8px">
+<input value="{{ query }}" onChange="{{ onQuery }}" placeholder="{{ queryPlaceholder }}" aria-label="Destino" style="flex:1;min-width:0;border:none;background:transparent;outline:none;font:600 var(--nsinput,16px)/1.3 Outfit,sans-serif;color:var(--nink,#061A0F);width:100%">
+<button onClick="{{ onVoiceSearch }}" aria-label="Buscar por voz" style="{{ micButtonStyle }}">
+<span style="{{ micPulseStyle }}"></span>
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="position:relative"><rect x="9" y="2" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+</button>
+</div>
+</div>
+</div>
+<sc-if value="{{ esSimple }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ pedirRemis }}" disabled="{{ pedirDisabled }}" style="{{ pedirRemisStyle }}">Pedir remís</button>
+</sc-if>
+<sc-if value="{{ mostrarExtrasHome }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ elegirEnMapa }}" style="width:100%;margin-top:10px;display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="width:34px;height:34px;border-radius:12px;background:var(--nbrandsoft,#E6FFF0);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nlink,#0A7A3F)">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"></path><path d="M9 4v14M15 6v14"></path></svg>
+</span>
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 15px/1.2 Outfit,sans-serif">Elegir en el mapa</span><span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Mové el mapa y soltá el pin donde quieras</span></span>
+<span style="font:400 14px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">›</span>
+</button>
+</sc-if>
+<div style="display:flex;flex-direction:column;margin-top:6px">
+<sc-for list="{{ sugerencias }}" as="s" hint-placeholder-count="4">
+<button onClick="{{ s.pick }}" style="display:flex;align-items:center;gap:14px;padding:14px 4px;border:none;border-bottom:1px solid var(--nline,rgba(6,26,15,.08));background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="width:36px;height:36px;border-radius:12px;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;flex:none">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>
+</span>
+<span style="display:flex;flex-direction:column;gap:2px"><span style="font:600 var(--nsbody,15px)/1.2 Outfit,sans-serif">{{ s.nombre }}</span><span style="font:400 var(--nssub,12.5px)/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ s.zona }}</span></span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{ sinResultados }}" hint-placeholder-val="{{ false }}">
+<div style="padding:26px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+<span style="width:44px;height:44px;border-radius:16px;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;color:var(--nmut,#5A6E62)">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+</span>
+<span style="font:600 15px/1.3 Outfit,sans-serif">No encontramos ese lugar en Nogoyá</span>
+<span style="font:400 13px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62);max-width:250px">Probá con el nombre de la calle y la altura, o marcá el punto exacto en el mapa.</span>
+<button onClick="{{ elegirEnMapa }}" style="margin-top:2px;height:48px;padding:0 20px;border:none;border-radius:16px;background:#52FF9C;color:#00230D;font:700 14.5px/1 Outfit,sans-serif;cursor:pointer">Elegir en el mapa</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ esMapaPick }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="width:10px;height:10px;border-radius:50%;background:#E5203D;flex:none"></span>
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 15px/1.2 Outfit,sans-serif">{{ puntoMapa }}</span><span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Nogoyá, Entre Ríos · punto aproximado</span></span>
+<button onClick="{{ moverPunto }}" style="border:none;background:transparent;cursor:pointer;font:600 13px/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Otro punto</button>
+</div>
+<input value="{{ referencia }}" onChange="{{ onReferencia }}" placeholder="Referencia (ej: frente al banco)" style="width:100%;box-sizing:border-box;margin-top:10px;height:48px;padding:0 14px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:14px;background:transparent;outline:none;font:500 14px/1 Outfit,sans-serif;color:var(--nink,#061A0F)">
+<button onClick="{{ confirmarPunto }}" style="width:100%;margin-top:12px;height:54px;border:none;border-radius:18px;background:#52FF9C;color:#00230D;font:700 16px/1 Outfit,sans-serif;cursor:pointer">Confirmar este punto</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esPaquete }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both;display:flex;flex-direction:column;gap:14px">
+
+<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="width:9px;height:9px;border-radius:2px;background:#E5203D;flex:none"></span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font:600 14.5px/1.2 Outfit,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ destino }}</span>
+<span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Dirección de entrega</span>
+</span>
+<button onClick="{{ volver }}" style="border:none;background:transparent;cursor:pointer;font:600 13px/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Cambiar</button>
+</div>
+
+<div>
+<span style="display:block;font:600 15px/1.2 Outfit,sans-serif;margin-bottom:8px">¿Quién recibe?</span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<input value="{{ destNombre }}" onChange="{{ onDestNombre }}" placeholder="Nombre y apellido" aria-label="Nombre de quien recibe" style="width:100%;box-sizing:border-box;height:52px;padding:0 14px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:transparent;outline:none;font:500 15px/1 Outfit,sans-serif;color:var(--nink,#061A0F)">
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px">
+<span style="font:600 14px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">+54</span>
+<span style="width:1px;height:20px;background:var(--nline2,rgba(6,26,15,.18))"></span>
+<input value="{{ destTel }}" onChange="{{ onDestTel }}" placeholder="Teléfono de contacto" inputMode="tel" aria-label="Teléfono de quien recibe" style="flex:1;min-width:0;border:none;background:transparent;outline:none;font:500 15px/1 Outfit,sans-serif;color:var(--nink,#061A0F);width:100%">
+</div>
+</div>
+<p style="margin:8px 0 0;font:400 12.5px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Le mandamos el seguimiento por WhatsApp. No necesita tener la app.</p>
+</div>
+
+<div>
+<span style="display:block;font:600 15px/1.2 Outfit,sans-serif;margin-bottom:8px">¿Qué mandás?</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<sc-for list="{{ tiposPaquete }}" as="t" hint-placeholder-count="4">
+<button onClick="{{ t.pick }}" style="{{ t.style }}">
+<span style="font:600 14px/1.2 Outfit,sans-serif">{{ t.label }}</span>
+<span style="font:400 11.5px/1.3 Outfit,sans-serif;opacity:.75">{{ t.detalle }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 14.5px/1.2 Outfit,sans-serif">Cobrar al entregar</span><span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">El cadete retira la plata y te la lleva</span></span>
+<button onClick="{{ toggleCobrar }}" aria-label="Cobrar al entregar" style="{{ switchCobrarStyle }}"><span style="{{ knobCobrarStyle }}"></span></button>
+</div>
+<sc-if value="{{ cobrar }}" hint-placeholder-val="{{ false }}">
+<input value="{{ cobrarMonto }}" onChange="{{ onCobrarMonto }}" placeholder="Monto a cobrar (ej: 12.000)" inputMode="numeric" aria-label="Monto a cobrar" style="width:100%;box-sizing:border-box;margin-top:-4px;height:52px;padding:0 14px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:transparent;outline:none;font:600 15px/1 Outfit,sans-serif;color:var(--nink,#061A0F)">
+</sc-if>
+
+<div>
+<span style="display:block;font:600 15px/1.2 Outfit,sans-serif;margin-bottom:8px">¿Quién paga el envío?</span>
+<div style="display:flex;gap:8px">
+<button onClick="{{ pagaYo }}" style="{{ pagaYoStyle }}">Lo pago yo</button>
+<button onClick="{{ pagaEl }}" style="{{ pagaElStyle }}">Paga quien recibe</button>
+</div>
+</div>
+
+<button onClick="{{ continuarPaquete }}" disabled="{{ paqueteInvalido }}" style="{{ paqueteCtaStyle }}">Continuar · ver precios</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esConfirmarSimple }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding:14px 4px 6px">
+<span style="font:600 18px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Viaje a {{ confirmarSimpleDestino }}</span>
+<div style="width:100%;padding:26px 18px;border-radius:22px;background:var(--nchip,#F2F6F3)">
+<span style="display:block;font:400 16px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62);margin-bottom:6px">Precio del viaje</span>
+<span style="display:block;font:700 42px/1.1 Outfit,sans-serif;color:var(--nink,#061A0F)">{{ confirmarSimplePrecio }}</span>
+</div>
+<button onClick="{{ confirmarSimpleIr }}" style="width:100%;height:64px;border:none;border-radius:20px;background:#52FF9C;color:#00230D;font:700 20px/1 Outfit,sans-serif;cursor:pointer">Pedir remís</button>
+<button onClick="{{ confirmarSimpleVolver }}" style="width:100%;height:48px;border:none;background:transparent;color:var(--nmut,#5A6E62);font:600 15px/1 Outfit,sans-serif;cursor:pointer">Volver</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esOpciones }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both">
+<sc-if value="{{ esEnvio }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:12px 14px;border-radius:16px;background:var(--nbrandsoft,#E6FFF0)">
+<span style="width:34px;height:34px;border-radius:12px;background:var(--nsurf,#fff);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nlink,#0A7A3F);font:700 13px/1 Outfit,sans-serif">{{ destInicial }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font:600 14.5px/1.2 Outfit,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Recibe {{ destNombreTexto }}</span>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ paqueteResumen }}</span>
+</span>
+<button onClick="{{ irPaquete }}" style="border:none;background:transparent;cursor:pointer;font:600 13px/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Editar</button>
+</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ opciones }}" as="o" hint-placeholder-count="3">
+<button onClick="{{ o.pick }}" style="{{ o.style }}">
+<span style="width:46px;height:46px;border-radius:14px;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nink,#061A0F)"><span style="{{ o.iconStyle }}">{{ o.icon }}</span></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:3px;text-align:left">
+<span style="font:600 16px/1.1 Outfit,sans-serif">{{ o.nombre }}</span>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ o.detalle }}</span>
+</span>
+<span style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+<span style="font:700 16px/1.1 Outfit,sans-serif">{{ o.precio }}</span>
+<span style="font:400 12px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ o.eta }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+
+
+
+<div style="display:flex;gap:8px;margin-top:12px">
+<button onClick="{{ setAhora }}" style="{{ ahoraStyle }}">Ahora</button>
+<button onClick="{{ toggleProgramar }}" style="{{ programadoStyle }}">{{ programarResumen }}</button>
+</div>
+<sc-if value="{{ abiertoProgramar }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:14px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<div style="display:flex;gap:6px;margin-bottom:12px">
+<sc-for list="{{ dias }}" as="d" hint-placeholder-count="2">
+<button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ horarios }}" as="h" hint-placeholder-count="8">
+<button onClick="{{ h.pick }}" style="{{ h.style }}">{{ h.label }}</button>
+</sc-for>
+</div>
+<button onClick="{{ confirmarProgramar }}" style="width:100%;margin-top:12px;height:44px;border:none;border-radius:14px;background:var(--nink,#061A0F);color:var(--nsurf,#fff);font:700 14px/1 Outfit,sans-serif;cursor:pointer">Listo</button>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:center;gap:12px;margin-top:12px;padding:14px 16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M3 10h18"></path></svg>
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 14px/1.2 Outfit,sans-serif">{{ pago }}</span><span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Saldo NoER {{ saldoTexto }} disponible</span></span>
+<button onClick="{{ cambiarPago }}" style="border:none;background:transparent;cursor:pointer;font:600 13px/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Cambiar</button>
+</div>
+<button onClick="{{ togglePrecio }}" style="width:100%;margin-top:10px;display:flex;align-items:center;gap:10px;padding:13px 16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;color:var(--nink,#061A0F)">
+<span style="flex:1;text-align:left;font:600 14px/1.2 Outfit,sans-serif">Ver cómo se calcula el precio</span>
+<span style="{{ caretPrecio }}">⌄</span>
+</button>
+<sc-if value="{{ abiertoPrecio }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ desglose }}" as="d" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;padding:6px 0;font:400 13.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">
+<span>{{ d.label }}</span><span style="font-weight:600;color:var(--nink,#061A0F)">{{ d.valor }}</span>
+</div>
+</sc-for>
+<div style="display:flex;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px solid var(--nline2,rgba(6,26,15,.18));font:700 15px/1 Outfit,sans-serif">
+<span>Precio cerrado</span><span>{{ precioFinal }}</span>
+</div>
+<p style="margin:8px 0 0;font:400 12px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">No cambia por tráfico ni por hasta 3 minutos de espera.</p>
+</div>
+</sc-if>
+<button onClick="{{ confirmar }}" style="width:100%;margin-top:14px;height:56px;border:none;border-radius:18px;background:#52FF9C;color:#00230D;font:700 17px/1 Outfit,sans-serif;cursor:pointer;box-shadow:0 8px 22px rgba(82,255,156,.3)">{{ ctaConfirmar }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esBuscando }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:6px">
+<div style="position:relative;width:74px;height:74px;display:flex;align-items:center;justify-content:center;margin:6px 0 4px">
+<span style="position:absolute;inset:0;border-radius:50%;background:#52FF9C;animation:noerPulse 2.4s ease-out infinite"></span>
+<span style="width:56px;height:56px;border-radius:50%;background:#52FF9C;display:flex;align-items:center;justify-content:center;color:#00230D">
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>
+</span>
+</div>
+<h2 style="margin:0;font:600 var(--nsh2,22px)/1.2 Outfit,sans-serif">Buscando chofer cerca</h2>
+<p style="margin:0;font:400 var(--nsrow,14px)/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62);text-align:center">Avisamos a los choferes disponibles en Nogoyá. Tardamos menos de un minuto.</p>
+<sc-if value="{{ demorado }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;width:100%;margin-top:14px;padding:16px;border-radius:18px;background:rgba(184,121,26,.12)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+<span style="width:8px;height:8px;border-radius:50%;background:var(--nwarn,#B8791A)"></span>
+<span style="font:600 14.5px/1.2 Outfit,sans-serif;color:var(--nwarn,#B8791A)">Está tardando más de lo normal</span>
+</div>
+<p style="margin:0 0 12px;font:400 13.5px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Hay pocos remises conectados en este momento. Seguímos buscando, pero puede demorar unos minutos más.</p>
+<button onClick="{{ llamarCentral }}" style="width:100%;height:46px;border:1px solid var(--nwarn,#B8791A);border-radius:14px;background:transparent;color:var(--nwarn,#B8791A);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Llamar a la central</button>
+</div>
+</sc-if>
+<button onClick="{{ cancelar }}" style="margin-top:12px;width:100%;height:50px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);font:600 15px/1 Outfit,sans-serif;cursor:pointer">Cancelar pedido</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esSinChoferes }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:8px">
+<div style="width:66px;height:66px;border-radius:50%;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;color:var(--nmut,#5A6E62);margin:6px 0 2px">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4.5 16v-3.2c0-.5.2-1 .6-1.3l1.7-1.6.9-2.4A2 2 0 0 1 9.6 6h4.8a2 2 0 0 1 1.9 1.5l.9 2.4 1.7 1.6c.4.35.6.8.6 1.3V16"></path><circle cx="7" cy="16.5" r="2"></circle><circle cx="17" cy="16.5" r="2"></circle><path d="M3 3l18 18"></path></svg>
+</div>
+<h2 style="margin:0;font:600 22px/1.2 Outfit,sans-serif;text-align:center">No hay choferes disponibles</h2>
+<p style="margin:0 0 4px;font:400 14px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62);text-align:center;max-width:280px">A esta hora no hay remises conectados en Nogoyá. Podemos avisarte apenas se libere uno.</p>
+<div style="width:100%;display:flex;flex-direction:column;gap:8px;margin-top:6px">
+<button onClick="{{ avisarme }}" style="width:100%;height:54px;border:none;border-radius:18px;background:#52FF9C;color:#00230D;font:700 16px/1 Outfit,sans-serif;cursor:pointer">Avisame cuando haya uno</button>
+<button onClick="{{ llamarCentral }}" style="width:100%;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);font:600 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4 5.2 2 2 0 0 1 6 3z"></path></svg>
+Llamar a la central · 343 555-1234
+</button>
+<button onClick="{{ reintentar }}" style="width:100%;height:46px;border:none;background:transparent;color:var(--nmut,#5A6E62);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Volver a intentar</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esAsignado }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both">
+<sc-if value="{{ reasignando }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-bottom:12px;padding:14px 16px;border-radius:16px;background:rgba(184,121,26,.12)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+<span style="width:8px;height:8px;border-radius:50%;background:var(--nwarn,#B8791A)"></span>
+<span style="font:600 14.5px/1.2 Outfit,sans-serif;color:var(--nwarn,#B8791A)">El chofer canceló</span>
+</div>
+<p style="margin:0;font:400 13.5px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Ya estamos buscando otro chofer cerca tuyo. No tenés que hacer nada y el precio no cambia.</p>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:var(--nbrandsoft,#E6FFF0);margin-bottom:14px">
+<span style="width:9px;height:9px;border-radius:50%;background:var(--nlink,#0A7A3F)"></span>
+<span style="font:600 var(--nsrow,14px)/1.2 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">{{ estadoViaje }}</span>
+<span style="flex:1"></span>
+<span style="font:700 var(--nsrow,14px)/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">{{ etaViaje }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:14px">
+<div style="width:58px;height:58px;border-radius:20px;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;font:700 20px/1 Outfit,sans-serif">JC</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:3px">
+<span style="font:600 18px/1.1 Outfit,sans-serif">Juan Carlos R.</span>
+<span style="font:400 13px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Fiat Cronos gris · AB 123 CD</span>
+<span style="font:500 13px/1.3 Outfit,sans-serif">4,9 ★ · 312 viajes</span>
+</div>
+</div>
+<sc-if value="{{ esEnvio }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px;margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="width:34px;height:34px;border-radius:12px;background:var(--nsurf,#fff);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nlink,#0A7A3F);font:700 13px/1 Outfit,sans-serif">{{ destInicial }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font:600 14.5px/1.2 Outfit,sans-serif">Entrega a {{ destNombreTexto }}</span>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ paqueteResumen }}</span>
+</span>
+</div>
+<button onClick="{{ enviarSeguimiento }}" style="width:100%;margin-top:8px;height:48px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid #25D366;border-radius:14px;background:transparent;color:var(--nlink,#128C4A);font:600 13.5px/1 Outfit,sans-serif;cursor:pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.25 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"></path></svg>
+Enviar seguimiento a quien recibe
+</button>
+</sc-if>
+<div style="margin-top:14px">
+<button onClick="{{ abrirSeguridad }}" style="width:100%;height:54px;display:flex;align-items:center;gap:12px;padding:0 14px;border:1.5px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);cursor:pointer;text-align:left">
+<span style="width:34px;height:34px;border-radius:12px;background:var(--nbrandsoft,#E6FFF0);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nlink,#0A7A3F)">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 9.5-4.1-1.6-7-5.3-7-9.5V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+</span>
+<span style="flex:1;display:flex;flex-direction:column;gap:1px">
+<span style="font:600 14.5px/1.2 Outfit,sans-serif">Seguridad del viaje</span>
+<span style="font:400 12px/1.2 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Compartir en vivo, contactos y 911</span>
+</span>
+<span style="font:400 15px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">›</span>
+</button>
+</div>
+
+<button onClick="{{ toggleChofer }}" style="width:100%;margin-top:12px;display:flex;align-items:center;gap:10px;padding:14px 16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;color:var(--nink,#061A0F)">
+<span style="flex:1;text-align:left;font:600 var(--nsrow,14px)/1.2 Outfit,sans-serif">Datos del chofer y del vehículo</span>
+<span style="{{ caretChofer }}">⌄</span>
+</button>
+<sc-if value="{{ abiertoChofer }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ datosChofer }}" as="d" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;font:400 13.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">
+<span>{{ d.label }}</span><span style="font-weight:600;color:var(--nink,#061A0F);text-align:right">{{ d.valor }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<button onClick="{{ toggleEstado }}" style="width:100%;margin-top:10px;display:flex;align-items:center;gap:10px;padding:14px 16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;color:var(--nink,#061A0F)">
+<span style="flex:1;text-align:left;font:600 var(--nsrow,14px)/1.2 Outfit,sans-serif">Estado del pedido paso a paso</span>
+<span style="{{ caretEstado }}">⌄</span>
+</button>
+<sc-if value="{{ abiertoEstado }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ pasos }}" as="p" hint-placeholder-count="5">
+<div style="display:flex;gap:12px;align-items:flex-start">
+<div style="display:flex;flex-direction:column;align-items:center;align-self:stretch">
+<span style="{{ p.dot }}"></span>
+<span style="{{ p.line }}"></span>
+</div>
+<div style="flex:1;padding-bottom:12px;display:flex;flex-direction:column;gap:2px">
+<span style="{{ p.titulo }}">{{ p.label }}</span>
+<span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ p.hora }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:center;gap:12px;margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 var(--nsrow,14px)/1.2 Outfit,sans-serif">{{ destino }}</span><span style="font:400 var(--nssub,12px)/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ pago }} · {{ precioFinal }}</span></span>
+<button onClick="{{ avanzar }}" style="height:48px;padding:0 18px;border:none;border-radius:14px;background:#52FF9C;color:#00230D;font:700 var(--nsrow,14px)/1 Outfit,sans-serif;cursor:pointer">{{ ctaAvanzar }}</button>
+</div>
+<button onClick="{{ cancelar }}" style="width:100%;margin-top:8px;height:48px;border:none;border-radius:14px;background:transparent;color:var(--nmut,#5A6E62);font:600 var(--nsrow,14px)/1 Outfit,sans-serif;cursor:pointer">Cancelar viaje</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ esFin }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .24s ease both;text-align:center">
+<div style="margin:4px auto 10px;width:56px;height:56px;border-radius:50%;background:#52FF9C;display:flex;align-items:center;justify-content:center;color:#00230D">
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg>
+</div>
+<h2 style="margin:0 0 4px;font:600 var(--nsh2,24px)/1.2 Outfit,sans-serif">Llegaste</h2>
+<p style="margin:0 0 16px;font:400 var(--nsrow,14px)/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ destino }} · {{ precioFinal }} en {{ pago }}</p>
+<div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px">
+<sc-for list="{{ estrellas }}" as="e" hint-placeholder-count="5">
+<button onClick="{{ e.pick }}" style="{{ e.style }}">★</button>
+</sc-for>
+</div>
+<button onClick="{{ verComprobante }}" style="width:100%;margin-bottom:8px;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);font:600 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5V3z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>
+Ver comprobante
+</button>
+<button onClick="{{ nuevoPedido }}" style="{{ ctaFinStyle }}">{{ ctaFin }}</button>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+<sc-if value="{{ esPedidos }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0 0 72px;background:var(--nbg,#fff);overflow:auto;padding:64px 18px 24px;animation:noerFade .2s ease both">
+<h1 style="margin:0 0 4px;font:600 30px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Mis pedidos</h1>
+<p style="margin:0 0 18px;font:400 14px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Viajes y encomiendas de los últimos 30 días.</p>
+<sc-for list="{{ pedidos }}" as="p" hint-placeholder-count="3">
+<div style="border-bottom:1px solid var(--nline,rgba(6,26,15,.08))">
+<button onClick="{{ p.toggle }}" style="width:100%;display:flex;gap:14px;padding:16px 0;border:none;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="width:42px;height:42px;border-radius:14px;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;flex:none;font:600 11px/1 Outfit,sans-serif">{{ p.tipo }}</span>
+<span style="flex:1;display:flex;flex-direction:column;gap:3px">
+<span style="font:600 15px/1.2 Outfit,sans-serif">{{ p.destino }}</span>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ p.fecha }} · {{ p.pago }}</span>
+<span style="{{ p.badge }}">{{ p.estado }}</span>
+</span>
+<span style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+<span style="font:700 15px/1.2 Outfit,sans-serif">{{ p.precio }}</span>
+<span style="{{ p.caret }}">⌄</span>
+</span>
+</button>
+<sc-if value="{{ p.abierto }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin:0 0 16px;padding:16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ p.filas }}" as="f" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;font:400 13px/1.35 Outfit,sans-serif;color:var(--nmut,#5A6E62)">
+<span>{{ f.label }}</span><span style="font-weight:600;color:var(--nink,#061A0F);text-align:right">{{ f.valor }}</span>
+</div>
+</sc-for>
+<button onClick="{{ p.comprobante }}" style="width:100%;margin-top:12px;height:44px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:var(--nsurf,#fff);color:var(--nink,#061A0F);font:600 13px/1 Outfit,sans-serif;cursor:pointer">Ver comprobante</button>
+<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--nline2,rgba(6,26,15,.18))">
+<span style="display:block;font:600 13.5px/1.25 Outfit,sans-serif;margin-bottom:8px">{{ p.reclamoTitulo }}</span>
+<sc-if value="{{ p.enviado }}" hint-placeholder-val="{{ false }}">
+<p style="margin:0;font:400 13px/1.45 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Recibimos tu reporte. Un administrador de NoER te escribe por WhatsApp en las próximas horas.</p>
+</sc-if>
+<sc-if value="{{ p.pendiente }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ p.motivos }}" as="m" hint-placeholder-count="4">
+<button onClick="{{ m.pick }}" style="{{ m.style }}">{{ m.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ p.conMotivo }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .2s ease both;margin-top:10px">
+<textarea value="{{ reclamoTexto }}" onChange="{{ onReclamoTexto }}" placeholder="Contanos qué pasó" style="width:100%;box-sizing:border-box;min-height:74px;padding:12px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:var(--nsurf,#fff);outline:none;resize:none;font:400 13.5px/1.4 Outfit,sans-serif;color:var(--nink,#061A0F)"></textarea>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button onClick="{{ p.enviar }}" style="flex:1;height:46px;border:none;border-radius:14px;background:#52FF9C;color:#00230D;font:700 14px/1 Outfit,sans-serif;cursor:pointer">Enviar reporte</button>
+<button onClick="{{ cancelarReclamo }}" style="height:46px;padding:0 16px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:transparent;color:var(--nmut,#5A6E62);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Cancelar</button>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ esBilletera }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0 0 72px;background:var(--nbg,#fff);overflow:auto;padding:64px 18px 24px;animation:noerFade .2s ease both">
+<h1 style="margin:0 0 16px;font:600 30px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Mi billetera</h1>
+<div style="padding:20px;border-radius:22px;background:#00230D;color:#52FF9C">
+<span style="font:500 13px/1 Outfit,sans-serif;opacity:.85">Saldo NoER</span>
+<div style="font:700 40px/1.1 Outfit,sans-serif;letter-spacing:-1px;margin:6px 0 2px">{{ saldoTexto }}</div>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;opacity:.75">Se usa automáticamente en tu próximo viaje</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+<button onClick="{{ cargarSaldo }}" style="height:50px;border:none;border-radius:16px;background:#52FF9C;color:#00230D;font:700 14px/1 Outfit,sans-serif;cursor:pointer">Cargar saldo</button>
+<button onClick="{{ irMediosPago }}" style="height:50px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Medios de pago</button>
+</div>
+<h3 style="margin:22px 0 4px;font:600 16px/1.2 Outfit,sans-serif">Movimientos</h3>
+<sc-for list="{{ movimientos }}" as="m" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--nline,rgba(6,26,15,.08))">
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 14.5px/1.2 Outfit,sans-serif">{{ m.titulo }}</span><span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ m.fecha }}</span></span>
+<span style="{{ m.style }}">{{ m.monto }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ esAvisos }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0 0 72px;background:var(--nbg,#fff);overflow:auto;padding:64px 18px 24px;animation:noerFade .2s ease both">
+<h1 style="margin:0 0 16px;font:600 30px/1.15 Outfit,sans-serif;letter-spacing:-.6px">Avisos</h1>
+<sc-for list="{{ avisos }}" as="a" hint-placeholder-count="3">
+<div style="{{ a.style }}">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+<span style="{{ a.dot }}"></span>
+<span style="font:600 15px/1.2 Outfit,sans-serif">{{ a.titulo }}</span>
+</div>
+<p style="margin:0 0 6px;font:400 13.5px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ a.texto }}</p>
+<span style="font:400 12px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ a.fecha }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ esCuenta }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0 0 72px;background:var(--nbg,#fff);overflow:auto;padding:64px 18px 24px;animation:noerFade .2s ease both">
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:22px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:none">
+<image-slot id="noer-avatar" shape="circle" style="width:104px;height:104px" placeholder="Tu foto"></image-slot>
+<span style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F);font:600 11.5px/1 Outfit,sans-serif;pointer-events:none">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+Cambiar foto
+</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<span style="font:600 22px/1.1 Outfit,sans-serif">Matías Benítez</span>
+<span style="font:400 13px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">+54 9 343 546-2568</span>
+<div style="display:flex;gap:6px;margin-top:2px">
+<span style="font:600 11px/1 Outfit,sans-serif;padding:5px 9px;border-radius:20px;background:#00230D;color:#52FF9C">PASAJERO</span>
+<span style="font:600 11px/1 Outfit,sans-serif;padding:5px 9px;border-radius:20px;background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F)">TEL. VERIFICADO</span>
+</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:18px;background:var(--nchip,#F2F6F3);margin-bottom:12px">
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 15px/1.2 Outfit,sans-serif">Modo oscuro</span><span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Verde NoER de noche</span></span>
+<button onClick="{{ toggleDark }}" style="{{ switchStyle }}"><span style="{{ knobStyle }}"></span></button>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:18px;background:var(--nchip,#F2F6F3);margin-bottom:12px">
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 15px/1.2 Outfit,sans-serif">Versión simple</span><span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Letra grande y sólo pedir remís</span></span>
+<button onClick="{{ toggleSimple }}" style="{{ switchSimpleStyle }}"><span style="{{ knobSimpleStyle }}"></span></button>
+</div>
+
+<button onClick="{{ toggleComo }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:18px;background:transparent;cursor:pointer;color:var(--nink,#061A0F)">
+<span style="flex:1;text-align:left;font:600 15px/1.2 Outfit,sans-serif">Cómo funciona NoER</span>
+<span style="{{ caretComo }}">⌄</span>
+</button><sc-if value="{{ abiertoComo }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:16px;border-radius:18px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ comoFunciona }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;gap:12px;padding:8px 0">
+<span style="width:26px;height:26px;border-radius:50%;background:var(--nink,#061A0F);color:var(--nsurf,#fff);font:700 13px/26px Outfit,sans-serif;text-align:center;flex:none">{{ c.n }}</span>
+<span style="display:flex;flex-direction:column;gap:2px"><span style="font:600 14px/1.25 Outfit,sans-serif">{{ c.titulo }}</span><span style="font:400 12.5px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ c.texto }}</span></span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<button onClick="{{ togglePrecio }}" style="width:100%;margin-top:10px;display:flex;align-items:center;gap:10px;padding:16px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:18px;background:transparent;cursor:pointer;color:var(--nink,#061A0F)">
+<span style="flex:1;text-align:left;font:600 15px/1.2 Outfit,sans-serif">Cómo se calcula el precio</span>
+<span style="{{ caretPrecio }}">⌄</span>
+</button>
+<sc-if value="{{ abiertoPrecio }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .22s ease both;margin-top:8px;padding:16px;border-radius:18px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ desglose }}" as="d" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;padding:7px 0;font:400 13.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">
+<span>{{ d.label }}</span><span style="font-weight:600;color:var(--nink,#061A0F)">{{ d.valor }}</span>
+</div>
+</sc-for>
+<div style="display:flex;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px solid var(--nline2,rgba(6,26,15,.18));font:700 16px/1 Outfit,sans-serif">
+<span>Total estimado</span><span>{{ precioFinal }}</span>
+</div>
+<p style="margin:10px 0 0;font:400 12px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">El precio se cierra al confirmar. Si el viaje cambia de destino, se recalcula y te avisamos antes.</p>
+</div>
+</sc-if>
+
+<div style="margin-top:12px">
+<sc-for list="{{ ajustes }}" as="a" hint-placeholder-count="4">
+<div style="border-bottom:1px solid var(--nline,rgba(6,26,15,.08))">
+<button onClick="{{ a.toggle }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:16px 4px;border:none;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="flex:1;font:500 15px/1.2 Outfit,sans-serif">{{ a.label }}</span>
+<span style="{{ a.caret }}">⌄</span>
+</button>
+<sc-if value="{{ a.abierto }}" hint-placeholder-val="{{ false }}">
+<div style="animation:noerUp .2s ease both;margin:0 0 14px;padding:14px 16px;border-radius:16px;background:var(--nchip,#F2F6F3)">
+<sc-for list="{{ a.filas }}" as="f" hint-placeholder-count="3">
+<div style="display:flex;gap:12px;padding:7px 0;align-items:flex-start">
+<span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:600 13.5px/1.25 Outfit,sans-serif">{{ f.titulo }}</span><span style="font:400 12.5px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ f.texto }}</span></span>
+<span style="font:600 12.5px/1.4 Outfit,sans-serif;color:var(--nlink,#0A7A3F);white-space:nowrap">{{ f.accion }}</span>
+</div>
+</sc-for>
+<button onClick="{{ a.onCta }}" style="width:100%;margin-top:8px;height:44px;border:none;border-radius:14px;background:var(--nink,#061A0F);color:var(--nsurf,#fff);font:700 13.5px/1 Outfit,sans-serif;cursor:pointer">{{ a.cta }}</button>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<button onClick="{{ cerrarSesion }}" style="width:100%;margin-top:14px;height:48px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:transparent;color:var(--nerr,#E5203D);font:600 14.5px/1 Outfit,sans-serif;cursor:pointer">Cerrar sesión</button>
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:32px 0 8px">
+<div style="padding:16px;border-radius:18px;border:1px dashed var(--nline2,rgba(6,26,15,.18));width:100%;box-sizing:border-box;margin-bottom:8px">
+<span style="display:block;font:600 13.5px/1.2 Outfit,sans-serif;margin-bottom:2px">Modo demo · sólo prototipo</span>
+<span style="display:block;font:400 12px/1.4 Outfit,sans-serif;color:var(--nmut,#5A6E62);margin-bottom:10px">Simula qué pasa en el próximo pedido. No va a producción.</span>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ demos }}" as="d" hint-placeholder-count="4">
+<button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+</sc-for>
+</div>
+</div>
+<div style="{{ logoFooterStyle }}"></div>
+<span style="font:400 11.5px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">NoER versión 1.1.0</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mostrarMiniViaje }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ volverAlViaje }}" style="position:absolute;left:12px;right:12px;bottom:80px;z-index:45;display:flex;align-items:center;gap:12px;height:58px;padding:0 16px;border:none;border-radius:18px;background:#00230D;color:#52FF9C;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.28);animation:noerUp .24s ease both">
+<span style="position:relative;width:10px;height:10px;flex:none"><span style="position:absolute;inset:0;border-radius:50%;background:#52FF9C;animation:noerPulse 2s ease-out infinite"></span><span style="position:absolute;inset:0;border-radius:50%;background:#52FF9C"></span></span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+<span style="font:700 14px/1.1 Outfit,sans-serif">{{ miniViajeTitulo }}</span>
+<span style="font:400 12px/1.2 Outfit,sans-serif;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px">{{ miniViajeSub }}</span>
+</span>
+<span style="font:700 13px/1 Outfit,sans-serif">Ver</span>
+</button>
+</sc-if>
+
+<sc-if value="{{ mostrarToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:16px;right:16px;bottom:84px;z-index:58;padding:14px 16px;border-radius:16px;background:var(--nink,#061A0F);color:var(--nbg,#fff);font:600 13.5px/1.35 Outfit,sans-serif;box-shadow:0 10px 26px rgba(0,0,0,.24);animation:noerUp .2s ease both">{{ toast }}</div>
+</sc-if>
+
+<sc-if value="{{ offline }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;z-index:70;display:flex;align-items:center;gap:10px;padding:52px 16px 12px;background:var(--nerr,#E5203D);color:#fff">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 4-2.4M19 13a10 10 0 0 0-3-2.1M2 9.5a15 15 0 0 1 6-3.3M22 9.5a15 15 0 0 0-9.5-3.4"></path><circle cx="12" cy="20" r="1" fill="currentColor"></circle></svg>
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:700 13.5px/1.2 Outfit,sans-serif">Sin conexión</span><span style="font:400 12px/1.3 Outfit,sans-serif;opacity:.9">No podemos pedir viajes ahora mismo</span></span>
+<button onClick="{{ llamarCentral }}" style="height:38px;padding:0 14px;border:none;border-radius:12px;background:#fff;color:var(--nerr,#E5203D);font:700 12.5px/1 Outfit,sans-serif;cursor:pointer;flex:none">Llamar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ mostrarSeguridad }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:62;background:rgba(0,18,8,.5);display:flex;align-items:flex-end;animation:noerFade .16s ease both">
+<div style="width:100%;max-height:640px;overflow:auto;box-sizing:border-box;padding:22px 20px 24px;border-radius:26px 26px 0 0;background:var(--nsurf,#fff);animation:noerUp .22s ease both">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+<span style="width:36px;height:36px;border-radius:12px;background:var(--nbrandsoft,#E6FFF0);display:flex;align-items:center;justify-content:center;flex:none;color:var(--nlink,#0A7A3F)">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 9.5-4.1-1.6-7-5.3-7-9.5V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+</span>
+<h2 style="margin:0;font:600 21px/1.2 Outfit,sans-serif;color:var(--nink,#061A0F)">Seguridad del viaje</h2>
+</div>
+<p style="margin:0 0 16px;font:400 13.5px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Vas con Juan Carlos R. en un Fiat Cronos gris, patente AB 123 CD. Todo el viaje queda registrado en NoER.</p>
+
+<button onClick="{{ compartirViaje }}" style="width:100%;height:56px;display:flex;align-items:center;gap:12px;padding:0 16px;border:none;border-radius:16px;background:#52FF9C;color:#00230D;cursor:pointer;text-align:left;margin-bottom:8px">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 3v12M8 7l4-4 4 4M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"></path></svg>
+<span style="flex:1;display:flex;flex-direction:column;gap:1px"><span style="font:700 15px/1.2 Outfit,sans-serif">Compartir recorrido en vivo</span><span style="font:500 12px/1.2 Outfit,sans-serif;opacity:.75">El enlace deja de funcionar al llegar</span></span>
+</button>
+
+<span style="display:block;font:600 13px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62);margin:14px 0 8px">Contactos de confianza</span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ contactos }}" as="c" hint-placeholder-count="2">
+<button onClick="{{ c.pick }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--nline,rgba(6,26,15,.1));border-radius:16px;background:transparent;cursor:pointer;text-align:left;color:var(--nink,#061A0F)">
+<span style="width:34px;height:34px;border-radius:50%;background:var(--nchip,#F2F6F3);display:flex;align-items:center;justify-content:center;flex:none;font:700 13px/1 Outfit,sans-serif">{{ c.inicial }}</span>
+<span style="flex:1;display:flex;flex-direction:column"><span style="font:600 14.5px/1.2 Outfit,sans-serif">{{ c.nombre }}</span><span style="font:400 12px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ c.tel }}</span></span>
+<span style="font:600 12.5px/1 Outfit,sans-serif;color:var(--nlink,#0A7A3F)">Avisar</span>
+</button>
+</sc-for>
+<button onClick="{{ agregarContacto }}" style="width:100%;height:46px;border:1px dashed var(--nline2,rgba(6,26,15,.18));border-radius:14px;background:transparent;color:var(--nmut,#5A6E62);font:600 13.5px/1 Outfit,sans-serif;cursor:pointer">Agregar contacto de confianza</button>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:16px">
+<button onClick="{{ llamar911 }}" style="flex:1;height:54px;display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:16px;background:var(--nerr,#E5203D);color:#fff;font:700 15px/1 Outfit,sans-serif;cursor:pointer">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4 5.2 2 2 0 0 1 6 3z"></path></svg>
+Llamar al 911
+</button>
+<button onClick="{{ noEsMiChofer }}" style="flex:1;height:54px;border:1.5px solid var(--nerr,#E5203D);border-radius:16px;background:transparent;color:var(--nerr,#E5203D);font:600 14px/1.2 Outfit,sans-serif;cursor:pointer">No es mi chofer</button>
+</div>
+<button onClick="{{ cerrarSeguridad }}" style="width:100%;margin-top:10px;height:48px;border:none;background:transparent;color:var(--nmut,#5A6E62);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Cerrar</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mostrarComprobante }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:64;background:rgba(0,18,8,.5);display:flex;align-items:flex-end;animation:noerFade .16s ease both">
+<div style="width:100%;max-height:700px;overflow:auto;box-sizing:border-box;padding:22px 20px 24px;border-radius:26px 26px 0 0;background:var(--nsurf,#fff);animation:noerUp .22s ease both">
+<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px">
+<div style="{{ logoComprobanteStyle }}"></div>
+<span style="flex:1"></span>
+<span style="display:flex;flex-direction:column;align-items:flex-end">
+<span style="font:700 12px/1.2 Outfit,sans-serif;letter-spacing:.5px;color:var(--nmut,#5A6E62)">COMPROBANTE</span>
+<span style="font:600 12.5px/1.3 Outfit,sans-serif">{{ compNro }}</span>
+</span>
+</div>
+<div style="padding:18px;border-radius:20px;background:var(--nchip,#F2F6F3);margin-bottom:12px">
+<span style="display:block;font:500 12.5px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Total pagado</span>
+<div style="font:700 34px/1.1 Outfit,sans-serif;letter-spacing:-1px;margin:6px 0 2px">{{ compTotal }}</div>
+<span style="font:400 12.5px/1.3 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ compPago }} · {{ compFecha }}</span>
+</div>
+<sc-for list="{{ compFilas }}" as="f" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--nline,rgba(6,26,15,.08));font:400 13.5px/1.35 Outfit,sans-serif;color:var(--nmut,#5A6E62)">
+<span>{{ f.label }}</span><span style="font-weight:600;color:var(--nink,#061A0F);text-align:right">{{ f.valor }}</span>
+</div>
+</sc-for>
+<p style="margin:14px 0 0;font:400 11.5px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">Documento no válido como factura. NoER · Nogoyá, Entre Ríos.</p>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button onClick="{{ descargarComprobante }}" style="flex:1;height:52px;border:none;border-radius:16px;background:#52FF9C;color:#00230D;font:700 14.5px/1 Outfit,sans-serif;cursor:pointer">Descargar PDF</button>
+<button onClick="{{ enviarComprobante }}" style="flex:1;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid #25D366;border-radius:16px;background:transparent;color:var(--nlink,#128C4A);font:600 14px/1 Outfit,sans-serif;cursor:pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.25 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"></path></svg>
+Enviar
+</button>
+</div>
+<button onClick="{{ cerrarComprobante }}" style="width:100%;margin-top:8px;height:48px;border:none;background:transparent;color:var(--nmut,#5A6E62);font:600 14px/1 Outfit,sans-serif;cursor:pointer">Cerrar</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mostrarCancelar }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:60;background:rgba(0,18,8,.5);display:flex;align-items:flex-end;animation:noerFade .16s ease both">
+<div style="width:100%;box-sizing:border-box;padding:24px 20px 26px;border-radius:26px 26px 0 0;background:var(--nsurf,#fff);animation:noerUp .22s ease both">
+<h2 style="margin:0 0 6px;font:600 21px/1.2 Outfit,sans-serif;color:var(--nink,#061A0F)">{{ cancelarTitulo }}</h2>
+<p style="margin:0 0 16px;font:400 14px/1.45 Outfit,sans-serif;color:var(--nmut,#5A6E62)">{{ cancelarTexto }}</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<button onClick="{{ confirmarCancelar }}" style="width:100%;height:52px;border:none;border-radius:16px;background:var(--nerr,#E5203D);color:#fff;font:700 15px/1 Outfit,sans-serif;cursor:pointer">Sí, cancelar</button>
+<button onClick="{{ cerrarCancelar }}" style="width:100%;height:52px;border:1px solid var(--nline2,rgba(6,26,15,.18));border-radius:16px;background:transparent;color:var(--nink,#061A0F);font:600 15px/1 Outfit,sans-serif;cursor:pointer">No, seguir con el pedido</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div style="position:absolute;left:0;right:0;bottom:0;height:72px;display:flex;align-items:center;padding:0 8px 8px;background:var(--nsurf,#fff);border-top:1px solid var(--nline,rgba(6,26,15,.08))">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+<button onClick="{{ t.pick }}" style="{{ t.style }}">
+<span style="position:relative;display:flex">
+<span style="display:flex">{{ t.icon }}</span>
+<sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;top:-2px;right:-6px;min-width:16px;height:16px;border-radius:8px;background:#E5203D;color:#fff;font:700 10px/16px Outfit,sans-serif;text-align:center;padding:0 3px">{{ t.badgeCount }}</span>
+</sc-if>
+</span>
+<span style="font:600 var(--nstab,10.5px)/1 Outfit,sans-serif">{{ t.label }}</span>
+</button>
+</sc-for>
+</div>
+
+</div>
+</x-import>
+
+<p style="max-width:402px;font:400 12.5px/1.5 Outfit,sans-serif;color:#5A6E62;margin:0">Flujo: <strong>¿A dónde vas?</strong> → destino → opciones con desglose de precio → chofer asignado con acordeones de datos y estado. El mapa está sobre el casco de Nogoyá con choferes circulando; en Cuenta podés arrastrar una foto al avatar.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:1010},&quot;modoOscuro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;servicioInicial&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;viaje&quot;,&quot;encomienda&quot;],&quot;default&quot;:&quot;viaje&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    loggedIn: false, loginStep: 'options', loginPhone: '',
+    simple: false, modeChosen: false,
+    voiceListening: false,
+    dark: false, tab: 'inicio', screen: 'home', servicio: 'viaje',
+    destino: '', origen: 'Mi ubicación actual', query: '',
+    vehiculo: 'auto', cuando: 'ahora', dia: 'hoy', hora: '21:45',
+    pagoIdx: 0, rating: 0, viajeFase: 0,
+    open: { programar: false, precio: false, chofer: false, estado: false, como: false },
+    pedidoAbierto: null, reclamoMotivo: '', reclamoTexto: '', enviados: [],
+    cuentaAbierto: null, referencia: '', puntoIdx: 0,
+    noLeidos: 3, saldo: 3500, confirmCancel: false, toast: '',
+    destNombre: '', destTel: '', paqTipo: '', cobrar: false, cobrarMonto: '', pagaQuien: 'yo',
+    demo: 'normal', offline: false, demorado: false, reasignando: false,
+    seguridad: false, comprobante: null,
+    ultimo: { destino: 'Chacabuco 1932', detalle: 'Auto · $ 5.429 · hoy 20:06', vehiculo: 'auto' },
+    movs: [
+      { titulo: 'Carga con Mercado Pago', fecha: 'Hoy 19:40', monto: '+ $ 5.000', entra: true },
+      { titulo: 'Viaje a Chacabuco 1932', fecha: 'Hoy 20:06', monto: '- $ 1.500', entra: false },
+      { titulo: 'Encomienda Barrio Sur', fecha: 'Ayer 12:21', monto: '- $ 2.900', entra: false }
+    ]
+  };
+
+  zoom = 1;
+  pan = { x: 0, y: 0 };
+  sheetCollapsed = false;
+
+  money = (n) => '$ ' + Number(n).toLocaleString('es-AR');
+
+  desgloseDe(totalStr) {
+    const total = parseInt(String(totalStr).replace(/\D/g, ''), 10) || 0;
+    if (total <= 1400) return [{ label: 'Total', valor: this.money(total) }];
+    const bajada = 1200, nocturno = 200;
+    const distancia = Math.round((total - bajada - nocturno) * 0.7);
+    return [
+      { label: 'Bajada de bandera', valor: this.money(bajada) },
+      { label: 'Distancia · 6,4 km', valor: this.money(distancia) },
+      { label: 'Tiempo estimado · 14 min', valor: this.money(total - bajada - nocturno - distancia) },
+      { label: 'Recargo nocturno (22 a 6 h)', valor: this.money(nocturno) }
+    ];
+  }
+
+  tiposDef = [
+    { id: 'sobre', label: 'Sobre', detalle: 'Documentos, llaves' },
+    { id: 'bolsa', label: 'Bolsa', detalle: 'Compras, comida' },
+    { id: 'caja', label: 'Caja', detalle: 'Hasta 10 kg' },
+    { id: 'otro', label: 'Otro', detalle: 'Lo contamos al cadete' }
+  ];
+
+  showToast = (msg) => {
+    this.setState({ toast: msg });
+    clearTimeout(this.tt);
+    this.tt = setTimeout(() => this.setState({ toast: '' }), 2400);
+  };
+
+  applyMapTransform() {
+    if (this.mapEl) this.mapEl.style.transform = 'translate(' + this.pan.x + 'px,' + this.pan.y + 'px) scale(' + this.zoom + ')';
+  }
+
+  onMapDown = (e) => {
+    if (e.target && e.target.closest && e.target.closest('button')) return;
+    const sx = e.clientX - this.pan.x, sy = e.clientY - this.pan.y;
+    const el = this.mapEl;
+    if (el) el.style.transition = 'none';
+    const move = (ev) => {
+      this.pan = {
+        x: Math.max(-170, Math.min(170, ev.clientX - sx)),
+        y: Math.max(-170, Math.min(170, ev.clientY - sy))
+      };
+      this.applyMapTransform();
+      if (this.state.screen === 'mapaPick') {
+        const idx = Math.abs(Math.round((this.pan.x + this.pan.y) / 60)) % this.puntos.length;
+        if (idx !== this.state.puntoIdx) this.setState({ puntoIdx: idx });
+      }
+    };
+    const up = () => {
+      if (el) el.style.transition = 'transform .28s cubic-bezier(.32,.72,0,1)';
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  puntos = ['Av. Rivadavia 250', 'Mitre 840', 'Chacabuco 1932', 'Alberdi 1150'];
+  motivosDef = ['Objeto perdido', 'Cobro incorrecto', 'Conducta del chofer', 'Otro problema'];
+
+  setZoom = (z) => {
+    this.zoom = Math.max(0.8, Math.min(2.4, z));
+    this.applyMapTransform();
+  };
+  onWheel = (e) => { e.preventDefault(); this.setZoom(this.zoom + (e.deltaY < 0 ? 0.12 : -0.12)); };
+
+  pagos = ['Efectivo', 'Saldo NoER', 'Mercado Pago'];
+
+  startVoiceSearch(fromHome) {
+    if (this.state.voiceListening) return;
+    this.setState({ voiceListening: true });
+    setTimeout(() => {
+      if (fromHome) {
+        this.closeAll({ screen: 'destino', voiceListening: false, query: 'Terminal de ómnibus' });
+      } else {
+        this.setState({ voiceListening: false, query: 'Terminal de ómnibus' });
+      }
+    }, 1400);
+  }
+
+  palette(dark, simple) {
+    const p = this.basePalette(dark);
+    if (!simple) return p;
+    return Object.assign({}, p, dark ? {
+      nmut: '#C8E8D4', nline: 'rgba(82,255,156,.34)', nline2: 'rgba(82,255,156,.5)',
+      nglass: '#04170D', nchip: '#0B331C', nlabel: '#6AA37F'
+    } : {
+      nmut: '#2E4437', nline: 'rgba(6,26,15,.28)', nline2: 'rgba(6,26,15,.45)',
+      nglass: '#FFFFFF', nchip: '#E8EFE9', nlink: '#065A2E', nlabel: '#5F7768'
+    });
+  }
+
+  basePalette(dark) {
+    return dark ? {
+      nbg: '#001208', nsurf: '#04170D', nchip: '#082616', nink: '#EAFBF1', nmut: '#7AA88C',
+      nline: 'rgba(82,255,156,.12)', nline2: 'rgba(82,255,156,.22)',
+      nmapbase: '#000C05', nroad: '#051D10', nroadmain: '#093018', npark: '#082A16',
+      nblock: '#03170B', nlabel: '#3E6650', nlabelpark: '#6DAE86', nroute: '#52FF9C',
+      nglass: 'rgba(4,23,13,.94)', ngrad: 'rgba(0,18,8,.6)', nlink: '#52FF9C',
+      nbrandsoft: 'rgba(82,255,156,.12)', nwarn: '#F0B24A', nerr: '#FF5C74'
+    } : {
+      nbg: '#FFFFFF', nsurf: '#FFFFFF', nchip: '#F2F6F3', nink: '#061A0F', nmut: '#5A6E62',
+      nline: 'rgba(6,26,15,.10)', nline2: 'rgba(6,26,15,.18)',
+      nmapbase: '#EBF0EB', nroad: '#FFFFFF', nroadmain: '#FFFFFF', npark: '#CFE6D5',
+      nblock: '#E1E9E2', nlabel: '#9BAFA1', nlabelpark: '#6E9B7E', nroute: '#00230D',
+      nglass: 'rgba(255,255,255,.94)', ngrad: 'rgba(0,35,13,.16)', nlink: '#0A7A3F',
+      nbrandsoft: '#E6FFF0', nwarn: '#B8791A', nerr: '#E5203D'
+    };
+  }
+
+  applyTheme() {
+    const el = this.rootEl;
+    if (!el) return;
+    const p = this.palette(this.state.dark, this.state.simple);
+    Object.keys(p).forEach(k => el.style.setProperty('--' + k, p[k]));
+    if (this.state.simple) {
+      el.style.zoom = '';
+      el.style.height = '874px';
+    } else {
+      el.style.zoom = '';
+      el.style.height = '874px';
+    }
+    const sz = this.state.simple
+      ? { nsbody: '18px', nsinput: '21px', nssub: '14.5px', nstab: '13px', nsrow: '17px', nsh2: '26px' }
+      : { nsbody: '15px', nsinput: '16px', nssub: '12.5px', nstab: '10.5px', nsrow: '14px', nsh2: '22px' };
+    Object.keys(sz).forEach(k => el.style.setProperty('--' + k, sz[k]));
+    if (this.sheetEl && !this.sheetCollapsed) this.sheetEl.style.transform = 'translateY(0px)';
+  }
+
+  componentDidMount() {
+    this.setState({
+      dark: !!this.props.modoOscuro,
+      servicio: this.props.servicioInicial === 'encomienda' ? 'encomienda' : 'viaje',
+      vehiculo: this.props.servicioInicial === 'encomienda' ? 'moto' : 'auto'
+    });
+    this.applyTheme();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps && prevProps.modoOscuro !== this.props.modoOscuro) this.setState({ dark: !!this.props.modoOscuro });
+    if (prevProps && prevProps.servicioInicial !== this.props.servicioInicial) {
+      const e = this.props.servicioInicial === 'encomienda';
+      this.setState({ servicio: e ? 'encomienda' : 'viaje', vehiculo: e ? 'moto' : 'auto' });
+    }
+    this.applyTheme();
+  }
+  componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.tt); }
+
+  toggle = (k) => this.setState(s => ({ open: Object.assign({}, s.open, { [k]: !s.open[k] }) }));
+  closeAll = (extra) => this.setState(Object.assign({ open: { programar: false, precio: false, chofer: false, estado: false, como: false } }, extra || {}));
+
+  lugares = [
+    { nombre: 'Terminal de Ómnibus', zona: 'Av. Rivadavia y Mitre' },
+    { nombre: 'Hospital San Blas', zona: 'Alberdi 1150' },
+    { nombre: 'Plaza Libertad', zona: 'Centro' },
+    { nombre: 'Chacabuco 1932', zona: 'Barrio Maipú' },
+    { nombre: 'Quiroga y Taboada 1398', zona: 'Barrio Sur' },
+    { nombre: 'Polideportivo Nogoyá', zona: 'Av. Belgrano' }
+  ];
+
+  tabDefs = [
+    { id: 'inicio', label: 'Inicio', d: 'M4 10l8-6 8 6v9a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z' },
+    { id: 'pedidos', label: 'Pedidos', d: 'M4 6h16M4 12h16M4 18h10' },
+    { id: 'billetera', label: 'Billetera', d: 'M3 7h18v11H3zM3 11h18M16 14h2' },
+    { id: 'avisos', label: 'Avisos', d: 'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20h4' },
+    { id: 'cuenta', label: 'Cuenta', d: 'M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6M12 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' }
+  ];
+
+  autoPath = 'M3 13l2-5h14l2 5v4h-3M6 17H3v-4';
+  motoPath = 'M5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM19 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM7 15h5l3-5h3M11 10h4';
+  petPath = 'M12 21c-3 0-5-1.7-5-4 0-1.8 2-3.4 5-3.4s5 1.6 5 3.4c0 2.3-2 4-5 4zM6.5 10.5a1.9 2.4 0 1 0 0-4.8 1.9 2.4 0 0 0 0 4.8zM17.5 10.5a1.9 2.4 0 1 0 0-4.8 1.9 2.4 0 0 0 0 4.8zM3.6 15.4a1.7 2.1 0 1 0 0-4.2 1.7 2.1 0 0 0 0 4.2zM20.4 15.4a1.7 2.1 0 1 0 0-4.2 1.7 2.1 0 0 0 0 4.2z';
+  furgonPath = 'M3 16V8h11v8M14 11h4l3 3v2h-7M6 18a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 6 18zM17 18a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 17 18z';
+
+  ico(d, size, sw) {
+    return React.createElement('svg', {
+      viewBox: '0 0 24 24', width: size || 22, height: size || 22, fill: 'none',
+      stroke: 'currentColor', strokeWidth: sw || 1.8, strokeLinecap: 'round', strokeLinejoin: 'round'
+    }, React.createElement('path', { d }));
+  }
+
+  vehicleIcon(kind, size) {
+    const s = size || 22;
+    if (kind === 'moto') {
+      return React.createElement('svg', { viewBox: '0 0 24 24', width: s, height: s, fill: 'none' },
+        React.createElement('circle', { cx: 5, cy: 17, r: 3, fill: 'currentColor' }),
+        React.createElement('circle', { cx: 18, cy: 17, r: 3, fill: 'currentColor' }),
+        React.createElement('path', { d: 'M5 17h4l2.5-5H15l3 5', stroke: 'currentColor', strokeWidth: 2.1, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' }),
+        React.createElement('path', { d: 'M11 12h4.5V9.5H13', stroke: 'currentColor', strokeWidth: 2.1, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' })
+      );
+    }
+    if (kind === 'furgon') {
+      return React.createElement('svg', { viewBox: '0 0 24 24', width: s, height: s, fill: 'none' },
+        React.createElement('path', { d: 'M3 6h11v9H3z', fill: 'currentColor' }),
+        React.createElement('path', { d: 'M14 10h4l3 2.5V15h-7z', fill: 'currentColor', opacity: .78 }),
+        React.createElement('circle', { cx: 7, cy: 17.5, r: 2, fill: 'var(--nsurf,#fff)', stroke: 'currentColor', strokeWidth: 1.6 }),
+        React.createElement('circle', { cx: 18, cy: 17.5, r: 2, fill: 'var(--nsurf,#fff)', stroke: 'currentColor', strokeWidth: 1.6 })
+      );
+    }
+    return React.createElement('svg', { viewBox: '0 0 24 24', width: s, height: s, fill: 'none' },
+      React.createElement('path', { d: 'M4.5 16v-3.2c0-.5.2-1 .6-1.3l1.7-1.6.9-2.4A2 2 0 0 1 9.6 6h4.8a2 2 0 0 1 1.9 1.5l.9 2.4 1.7 1.6c.4.35.6.8.6 1.3V16H4.5z', fill: 'currentColor' }),
+      React.createElement('path', { d: 'M7 8.6 6.1 11h11.8l-.9-2.4A1 1 0 0 0 16 8H8a1 1 0 0 0-1 .6z', fill: 'var(--nsurf,#fff)' }),
+      React.createElement('circle', { cx: 7, cy: 16.5, r: 2, fill: 'var(--nsurf,#fff)', stroke: 'currentColor', strokeWidth: 1.6 }),
+      React.createElement('circle', { cx: 17, cy: 16.5, r: 2, fill: 'var(--nsurf,#fff)', stroke: 'currentColor', strokeWidth: 1.6 })
+    );
+  }
+
+  onGrab = (e) => {
+    const el = this.sheetEl;
+    if (!el) return;
+    const startY = e.clientY;
+    const base = this.sheetCollapsed ? 210 : 0;
+    let dy = 0;
+    el.style.transition = 'none';
+    const move = (ev) => {
+      dy = Math.max(-30, Math.min(240, base + ev.clientY - startY));
+      el.style.transform = 'translateY(' + dy + 'px)';
+    };
+    const up = () => {
+      el.style.transition = 'transform .3s cubic-bezier(.32,.72,0,1)';
+      this.sheetCollapsed = dy > 90;
+      el.style.transform = 'translateY(' + (this.sheetCollapsed ? 210 : 0) + 'px)';
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  pickDestino = (nombre) => {
+    if (this.state.simple) {
+      this.setState({ destino: nombre, query: nombre, screen: 'confirmarSimple' });
+      return;
+    }
+    if (this.state.servicio === 'encomienda') {
+      this.closeAll({ destino: nombre, query: nombre, screen: 'paquete' });
+      return;
+    }
+    this.closeAll({ destino: nombre, query: nombre, screen: 'opciones' });
+  };
+
+  buscar = () => {
+    this.closeAll({ screen: 'buscando', viajeFase: 0, demorado: false, reasignando: false, confirmCancel: false });
+    clearTimeout(this.t);
+    const demo = this.state.demo;
+    if (demo === 'sinChoferes') {
+      this.t = setTimeout(() => this.setState({ screen: 'sinChoferes' }), 2400);
+      return;
+    }
+    if (demo === 'demora') {
+      this.t = setTimeout(() => {
+        this.setState({ demorado: true });
+        this.t = setTimeout(() => this.setState({ screen: 'asignado', demorado: false }), 5200);
+      }, 2200);
+      return;
+    }
+    this.t = setTimeout(() => {
+      this.setState({ screen: 'asignado' });
+      if (this.state.demo === 'cancelaChofer') {
+        this.t = setTimeout(() => {
+          this.setState({ reasignando: true });
+          this.t = setTimeout(() => { this.setState({ reasignando: false }); this.showToast('Te asignamos otro chofer: Marcela T. · AC 482 KQ'); }, 5200);
+        }, 3200);
+      }
+    }, 2600);
+  };
+
+  guardarUltimoDeshabilitado = () => {
+    const s = this.state, sel = this.selActual || {};
+    this.setState({
+      ultimo: {
+        destino: s.destino || 'Destino',
+        detalle: (sel.nombre || 'Auto') + ' · ' + (sel.precio || '') + ' · ' + (s.servicio === 'encomienda' ? 'encomienda' : 'viaje'),
+        vehiculo: s.vehiculo
+      }
+    });
+  };
+
+  toggleSheet = () => {
+    if (!this.sheetEl) return;
+    this.sheetCollapsed = !this.sheetCollapsed;
+    this.sheetEl.style.transition = 'transform .3s cubic-bezier(.32,.72,0,1)';
+    this.sheetEl.style.transform = 'translateY(' + (this.sheetCollapsed ? 210 : 0) + 'px)';
+  };
+
+  confirmar = () => {
+    if (this.state.cuando === 'programado') {
+      this.closeAll({ screen: 'asignado', viajeFase: 0 });
+      return;
+    }
+    this.buscar();
+  };
+
+  avanzar = () => {
+    if (this.state.viajeFase === 0) this.setState({ viajeFase: 1 });
+    else this.closeAll({ screen: 'fin' });
+  };
+
+  reset = () => { clearTimeout(this.t); this.sheetCollapsed = false; this.closeAll({ screen: 'home', destino: '', query: '', rating: 0, viajeFase: 0, cuando: 'ahora', confirmCancel: false, demorado: false, reasignando: false, seguridad: false }); };
+
+  chip(active, dark) {
+    return 'flex:1;height:42px;border:none;border-radius:13px;cursor:pointer;font:600 14.5px/1 Outfit,sans-serif;transition:background .18s ease,color .18s ease;'
+      + (active ? (dark ? 'background:#52FF9C;color:#00230D' : 'background:#00230D;color:#52FF9C') : 'background:transparent;color:var(--nmut,#5A6E62)');
+  }
+  pill(active) {
+    return 'flex:1;min-width:0;height:46px;padding:0 10px;border-radius:15px;cursor:pointer;font:600 13px/1 Outfit,sans-serif;transition:background .18s ease;'
+      + (active
+        ? 'border:1.5px solid var(--nink,#061A0F);background:var(--nbrandsoft,#E6FFF0);color:var(--nink,#061A0F)'
+        : 'border:1px solid var(--nline,rgba(6,26,15,.1));background:transparent;color:var(--nmut,#5A6E62)');
+  }
+  slot(active, dark) {
+    return 'height:36px;padding:0 12px;border-radius:12px;cursor:pointer;font:600 13px/1 Outfit,sans-serif;transition:background .18s ease;'
+      + (active
+        ? (dark ? 'border:none;background:#52FF9C;color:#00230D' : 'border:none;background:#00230D;color:#52FF9C')
+        : 'border:1px solid var(--nline2,rgba(6,26,15,.18));background:var(--nsurf,#fff);color:var(--nink,#061A0F)');
+  }
+  caret(open) {
+    return 'display:inline-block;font:700 14px/1 Outfit,sans-serif;color:var(--nmut,#5A6E62);transition:transform .2s ease;transform:rotate(' + (open ? '180deg' : '0deg') + ')';
+  }
+
+  renderVals() {
+    const s = this.state;
+    const phoneOk = s.loginPhone.replace(/\D/g, '').length >= 8;
+    const loginVals = {
+      loggedIn: s.loggedIn, loginPhone: s.loginPhone,
+      needsModeChoice: s.loggedIn && !s.modeChosen,
+      elegirNormal: () => this.setState({ simple: false, modeChosen: true }),
+      elegirSimple: () => this.setState({ simple: true, modeChosen: true }),
+      mostrarExtrasHome: !s.simple,
+      esSimple: s.simple,
+      pedirDisabled: !s.query.trim(),
+      pedirRemis: () => { if (s.query.trim()) this.pickDestino(s.query.trim()); },
+      pedirRemisStyle: 'width:100%;margin-top:12px;height:60px;border:none;border-radius:18px;font:700 19px/1 Outfit,sans-serif;cursor:pointer;'
+        + (s.query.trim() ? 'background:#52FF9C;color:#00230D' : 'background:var(--nchip,#F2F6F3);color:var(--nmut,#5A6E62);cursor:not-allowed'),
+      ocultarMapa: s.simple && s.screen === 'home',
+      mostrarControlesMapa: !(s.simple && s.screen === 'home'),
+      toggleSimple: () => this.setState({ simple: !s.simple, tab: 'inicio' }),
+      switchSimpleStyle: 'width:52px;height:30px;border:none;border-radius:16px;cursor:pointer;display:flex;align-items:center;padding:3px;transition:background .2s ease;'
+        + (s.simple ? 'background:#52FF9C;justify-content:flex-end' : 'background:var(--nline2,rgba(6,26,15,.18));justify-content:flex-start'),
+      knobSimpleStyle: 'width:24px;height:24px;border-radius:50%;background:' + (s.simple ? '#00230D' : '#fff') + ';box-shadow:0 1px 4px rgba(0,0,0,.25);display:block',
+      notLoggedIn: !s.loggedIn, isLoginOptions: s.loginStep === 'options', isLoginPhone: s.loginStep === 'phone',
+      onGoogleLogin: () => this.setState({ loggedIn: true }),
+      onFacebookLogin: () => this.setState({ loggedIn: true }),
+      onShowPhone: () => this.setState({ loginStep: 'phone' }),
+      onBackToOptions: () => this.setState({ loginStep: 'options' }),
+      onPhoneChange: (e) => this.setState({ loginPhone: e.target.value }),
+      onPhoneContinue: () => { if (phoneOk) this.setState({ loggedIn: true }); },
+      phoneDisabled: !phoneOk,
+      phoneCtaStyle: 'width:100%;height:54px;border:none;border-radius:16px;font:700 15px/1 Outfit,sans-serif;cursor:pointer;'
+        + (phoneOk ? 'background:#52FF9C;color:#00230D' : 'background:var(--nchip,#F2F6F3);color:var(--nmut,#5A6E62);cursor:not-allowed')
+    };
+    const envio = s.servicio === 'encomienda';
+    const tab = s.tab;
+    const enFlujo = tab === 'inicio';
+    const q = s.query.trim().toLowerCase();
+    const lista = q && s.screen === 'destino'
+      ? this.lugares.filter(l => (l.nombre + ' ' + l.zona).toLowerCase().includes(q))
+      : this.lugares;
+
+    const precios = envio
+      ? [
+          { id: 'moto', nombre: 'Moto', detalle: 'Sobres y paquetes chicos', precio: '$ 2.900', eta: '3 min', path: this.motoPath },
+          { id: 'auto', nombre: 'Auto', detalle: 'Hasta 4 bolsas o una caja', precio: '$ 4.200', eta: '5 min', path: this.autoPath },
+          { id: 'furgon', nombre: 'Camioneta', detalle: 'Muebles y mudanzas chicas', precio: '$ 9.800', eta: '12 min', path: this.furgonPath }
+        ]
+      : [
+          { id: 'auto', nombre: 'Auto', detalle: 'Hasta 4 pasajeros', precio: '$ 4.850', eta: '4 min', path: this.autoPath },
+          { id: 'moto', nombre: 'Moto', detalle: 'Uno solo, más rápido', precio: '$ 3.200', eta: '2 min', path: this.motoPath }
+        ];
+    const sel = precios.find(p => p.id === s.vehiculo) || precios[0];
+
+    const pasosTot = envio ? 4 : 3;
+    const headers = {
+      home: ['Nogoyá y alrededores', envio ? 'Encomiendas y cadetería' : 'Remises habilitados'],
+      destino: [envio ? 'Origen y entrega' : 'Origen y destino', 'Paso 1 de ' + pasosTot],
+      paquete: ['Datos de la encomienda', 'Paso 2 de 4'],
+      opciones: [s.destino || 'Elegí el vehículo', 'Paso ' + (envio ? 3 : 2) + ' de ' + pasosTot],
+      confirmarSimple: ['Confirmá el precio', s.destino || 'Destino'],
+      buscando: [envio ? 'Buscando cadete' : 'Buscando chofer', 'Paso ' + pasosTot + ' de ' + pasosTot],
+      sinChoferes: ['Sin choferes disponibles', 'Nogoyá · intentá en unos minutos'],
+      mapaPick: ['Elegí el punto en el mapa', 'Arrastrá el mapa para mover el pin'],
+      asignado: [s.viajeFase === 0 ? 'Tu chofer está llegando' : 'En viaje', s.destino || 'Destino'],
+      fin: ['Viaje finalizado', 'Gracias por viajar con NoER']
+    };
+    const head = headers[s.screen] || headers.home;
+
+    const slots = ['21:45', '22:00', '22:15', '22:30', '22:45', '23:00', '23:15', '23:30'];
+    const diaLabel = s.dia === 'hoy' ? 'Hoy' : 'Mañana';
+    const resumen = s.cuando === 'programado' ? diaLabel + ' ' + s.hora : 'Elegir día y hora';
+
+    const pasosDef = [
+      { label: 'Pedido creado', hora: '21:38' },
+      { label: 'Chofer asignado', hora: '21:39' },
+      { label: 'Chofer en camino', hora: s.viajeFase === 0 ? 'Ahora' : '21:43' },
+      { label: 'En viaje', hora: s.viajeFase === 1 ? 'Ahora' : 'Pendiente' },
+      { label: 'Finalizado', hora: 'Pendiente' }
+    ];
+    const activo = s.viajeFase === 0 ? 2 : 3;
+
+    const totalNum = parseInt(sel.precio.replace(/\D/g, ''), 10);
+    const desglose = this.desgloseDe(sel.precio);
+    const programado = s.cuando === 'programado';
+    this.selActual = sel;
+    const nombreRecibe = s.destNombre.trim() || 'quien recibe';
+    const tipoSel = this.tiposDef.find(t => t.id === s.paqTipo);
+    const paqResumen = [
+      tipoSel ? tipoSel.label : 'Paquete',
+      s.cobrar && s.cobrarMonto ? 'cobrar $ ' + s.cobrarMonto : 'sin cobro',
+      s.pagaQuien === 'yo' ? 'envío lo pago yo' : 'envío lo paga quien recibe'
+    ].join(' · ');
+    const paqueteOk = !!s.destNombre.trim() && s.destTel.replace(/\D/g, '').length >= 6 && !!s.paqTipo;
+    const cp = s.comprobante || {};
+    const comprobanteDe = (o) => () => this.setState({ comprobante: o });
+
+    return {
+      ...loginVals,
+      dark: s.dark,
+      rootRef: (el) => { this.rootEl = el; this.applyTheme(); },
+      mapRef: (el) => { this.mapEl = el; this.applyMapTransform(); },
+      onWheel: this.onWheel,
+      zoomIn: () => this.setZoom(this.zoom + 0.25),
+      zoomOut: () => this.setZoom(this.zoom - 0.25),
+      centrar: () => { this.pan = { x: 0, y: 0 }; this.setZoom(1); },
+      onMapDown: this.onMapDown,
+      toggleSheet: this.toggleSheet,
+      offline: s.offline,
+      llamarCentral: () => { window.open('tel:+543435551234'); this.showToast('Llamando a la central de NoER…'); },
+      llamar911: () => { window.open('tel:911'); this.showToast('Llamando al 911…'); },
+      destNombre: s.destNombre,
+      destTel: s.destTel,
+      destNombreTexto: nombreRecibe,
+      destInicial: (s.destNombre.trim() || 'N').slice(0, 1).toUpperCase(),
+      paqueteResumen: paqResumen,
+      onDestNombre: (e) => this.setState({ destNombre: e.target.value }),
+      onDestTel: (e) => this.setState({ destTel: e.target.value }),
+      tiposPaquete: this.tiposDef.map(t => ({
+        label: t.label, detalle: t.detalle,
+        pick: () => this.setState({ paqTipo: t.id }),
+        style: 'display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:16px;cursor:pointer;text-align:left;color:var(--nink,#061A0F);transition:background .18s ease;'
+          + (s.paqTipo === t.id ? 'border:1.5px solid var(--nink,#061A0F);background:var(--nbrandsoft,#E6FFF0)' : 'border:1px solid var(--nline,rgba(6,26,15,.1));background:transparent')
+      })),
+      cobrar: s.cobrar,
+      cobrarMonto: s.cobrarMonto,
+      onCobrarMonto: (e) => this.setState({ cobrarMonto: e.target.value }),
+      toggleCobrar: () => this.setState({ cobrar: !s.cobrar }),
+      switchCobrarStyle: 'width:52px;height:30px;border:none;border-radius:16px;cursor:pointer;display:flex;align-items:center;padding:3px;transition:background .2s ease;'
+        + (s.cobrar ? 'background:#52FF9C;justify-content:flex-end' : 'background:var(--nline2,rgba(6,26,15,.18));justify-content:flex-start'),
+      knobCobrarStyle: 'width:24px;height:24px;border-radius:50%;background:' + (s.cobrar ? '#00230D' : '#fff') + ';box-shadow:0 1px 4px rgba(0,0,0,.25);display:block',
+      pagaYo: () => this.setState({ pagaQuien: 'yo' }),
+      pagaEl: () => this.setState({ pagaQuien: 'el' }),
+      pagaYoStyle: this.pill(s.pagaQuien === 'yo'),
+      pagaElStyle: this.pill(s.pagaQuien === 'el'),
+      paqueteInvalido: !paqueteOk,
+      paqueteCtaStyle: 'width:100%;height:56px;border:none;border-radius:18px;font:700 16px/1 Outfit,sans-serif;cursor:pointer;'
+        + (paqueteOk ? 'background:#52FF9C;color:#00230D' : 'background:var(--nchip,#F2F6F3);color:var(--nmut,#5A6E62);cursor:not-allowed'),
+      continuarPaquete: () => { if (paqueteOk) this.closeAll({ screen: 'opciones' }); },
+      irPaquete: () => this.closeAll({ screen: 'paquete' }),
+      enviarSeguimiento: () => this.showToast('Le mandamos el seguimiento a ' + nombreRecibe + ' por WhatsApp.'),
+      demorado: s.demorado,
+      reasignando: s.reasignando,
+      avisarme: () => { this.showToast('Te avisamos apenas se conecte un chofer.'); this.reset(); },
+      reintentar: this.buscar,
+      demos: [
+        { id: 'normal', label: 'Todo normal' },
+        { id: 'sinChoferes', label: 'Sin choferes' },
+        { id: 'demora', label: 'Demora' },
+        { id: 'cancelaChofer', label: 'El chofer cancela' }
+      ].map(d => ({
+        label: d.label,
+        pick: () => this.setState({ demo: d.id }),
+        style: this.slot(s.demo === d.id, s.dark)
+      })).concat([{
+        label: s.offline ? 'Volver a conectar' : 'Sin conexión',
+        pick: () => this.setState({ offline: !s.offline }),
+        style: this.slot(s.offline, s.dark)
+      }]),
+      mostrarSeguridad: s.seguridad,
+      abrirSeguridad: () => this.setState({ seguridad: true }),
+      cerrarSeguridad: () => this.setState({ seguridad: false }),
+      contactos: [
+        { nombre: 'Mamá', tel: '+54 9 343 512-8890', inicial: 'M' },
+        { nombre: 'Sofía B.', tel: '+54 9 343 544-1207', inicial: 'S' }
+      ].map(c => ({ nombre: c.nombre, tel: c.tel, inicial: c.inicial, pick: () => this.showToast('Le avisamos a ' + c.nombre + ' con tu ubicación en vivo.') })),
+      agregarContacto: () => this.showToast('Elegí un contacto de tu agenda (demo).'),
+      noEsMiChofer: () => { this.setState({ seguridad: false }); this.showToast('Reportado. Un administrador de NoER te llama ahora.'); },
+      mostrarComprobante: !!s.comprobante,
+      compNro: cp.nro,
+      compFecha: cp.fecha,
+      compTotal: cp.total,
+      compPago: cp.pago,
+      compFilas: cp.filas || [],
+      logoComprobanteStyle: 'width:96px;height:38px;background:url(' + (s.dark ? 'assets/logo-noche.png' : 'assets/logo-claro.png') + ') left center/contain no-repeat',
+      cerrarComprobante: () => this.setState({ comprobante: null }),
+      descargarComprobante: () => this.showToast('Comprobante descargado en PDF.'),
+      enviarComprobante: () => this.showToast('Comprobante enviado por WhatsApp.'),
+      verComprobante: comprobanteDe({
+        nro: 'NR-2026-0918', fecha: 'Hoy 20:32', total: sel.precio, pago: this.pagos[s.pagoIdx],
+        filas: [
+          { label: 'Origen', valor: s.origen },
+          { label: 'Destino', valor: s.destino || 'Destino' },
+          { label: 'Chofer', valor: 'Juan Carlos R.' },
+          { label: 'Vehículo', valor: 'Fiat Cronos gris · AB 123 CD' }
+        ].concat(desglose)
+      }),
+      saldoTexto: this.money(s.saldo),
+      cargarSaldo: () => {
+        this.setState(st => ({
+          saldo: st.saldo + 5000,
+          movs: [{ titulo: 'Carga con Mercado Pago', fecha: 'Recién', monto: '+ $ 5.000', entra: true }].concat(st.movs)
+        }));
+        this.showToast('Cargaste $ 5.000 en tu saldo NoER.');
+      },
+      irMediosPago: () => this.setState({ tab: 'cuenta', cuentaAbierto: 'Medios de pago' }),
+      cerrarSesion: () => { clearTimeout(this.t); this.setState({ loggedIn: false, modeChosen: false, loginStep: 'options', loginPhone: '', tab: 'inicio', screen: 'home' }); },
+      compartirViaje: () => this.showToast('Enviamos el enlace de seguimiento. Deja de funcionar cuando llegues.'),
+      mostrarToast: !!s.toast,
+      toast: s.toast,
+      mostrarCancelar: s.confirmCancel,
+      cancelarTitulo: s.screen === 'buscando' ? '¿Cancelar el pedido?' : '¿Cancelar el viaje?',
+      cancelarTexto: s.screen === 'buscando'
+        ? 'Todavía no hay chofer asignado, así que no tiene costo.'
+        : 'El chofer ya salió hacia tu ubicación. Cancelar ahora puede tener un cargo de $ 900.',
+      confirmarCancelar: this.reset,
+      cerrarCancelar: () => this.setState({ confirmCancel: false }),
+      mostrarMiniViaje: !enFlujo && (s.screen === 'buscando' || s.screen === 'asignado'),
+      miniViajeTitulo: s.screen === 'buscando' ? 'Buscando chofer' : (s.viajeFase === 0 ? 'Tu chofer está llegando' : 'En viaje'),
+      miniViajeSub: s.destino || 'Pedido en curso',
+      volverAlViaje: () => this.setState({ tab: 'inicio' }),
+      esMapaPick: enFlujo && s.screen === 'mapaPick',
+      elegirEnMapa: () => this.closeAll({ screen: 'mapaPick' }),
+      puntoMapa: this.puntos[s.puntoIdx],
+      moverPunto: () => this.setState({ puntoIdx: (s.puntoIdx + 1) % this.puntos.length }),
+      referencia: s.referencia,
+      onReferencia: (e) => this.setState({ referencia: e.target.value }),
+      confirmarPunto: () => this.pickDestino(this.puntos[s.puntoIdx]),
+      reclamoTexto: s.reclamoTexto,
+      onReclamoTexto: (e) => this.setState({ reclamoTexto: e.target.value }),
+      cancelarReclamo: () => this.setState({ reclamoMotivo: '', reclamoTexto: '' }),
+      sheetRef: (el) => { this.sheetEl = el; },
+      toggleDark: () => this.setState({ dark: !s.dark }),
+      onGrab: this.onGrab,
+      pinDestinoStyle: 'position:absolute;left:280px;top:178px;width:36px;height:42px;background:url(' + (s.dark ? 'assets/pin-noche.png' : 'assets/pin-claro.png') + ') center/contain no-repeat;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))',
+      pinHeaderStyle: 'width:38px;height:42px;flex:none;background:url(' + (s.dark ? 'assets/pin-noche.png' : 'assets/pin-claro.png') + ') center/contain no-repeat;filter:drop-shadow(0 3px 8px rgba(0,0,0,.18))',
+      logoFooterStyle: 'width:132px;height:54px;opacity:.92;background:url(' + (s.dark ? 'assets/logo-noche.png' : 'assets/logo-claro.png') + ') center/contain no-repeat',
+      logoCenterStyle: 'width:112px;height:46px;background:url(' + (s.dark ? 'assets/logo-noche.png' : 'assets/logo-claro.png') + ') center/contain no-repeat',
+      contactarSoporte: () => window.open('https://wa.me/543435551234', '_blank'),
+
+      enFlujo: enFlujo,
+      mostrarVolver: enFlujo && (s.screen === 'destino' || s.screen === 'opciones' || s.screen === 'mapaPick' || s.screen === 'paquete' || s.screen === 'confirmarSimple'),
+      mostrarLogo: enFlujo && !s.simple && !(s.screen === 'destino' || s.screen === 'opciones' || s.screen === 'mapaPick' || s.screen === 'paquete'),
+      headerTitulo: head[0],
+      headerSub: head[1],
+
+      esHome: enFlujo && s.screen === 'home',
+      esDestino: enFlujo && s.screen === 'destino',
+      esConfirmarSimple: enFlujo && s.screen === 'confirmarSimple',
+      confirmarSimplePrecio: sel.precio,
+      confirmarSimpleDestino: s.destino || 'Destino',
+      confirmarSimpleIr: () => this.buscar(),
+      confirmarSimpleVolver: () => this.setState({ screen: 'destino' }),
+      esPaquete: enFlujo && s.screen === 'paquete',
+      esSinChoferes: enFlujo && s.screen === 'sinChoferes',
+      esEnvio: envio,
+      esOpciones: enFlujo && s.screen === 'opciones',
+      esBuscando: enFlujo && s.screen === 'buscando',
+      esAsignado: enFlujo && s.screen === 'asignado',
+      esFin: enFlujo && s.screen === 'fin',
+      esPedidos: tab === 'pedidos',
+      esBilletera: tab === 'billetera',
+      esAvisos: tab === 'avisos',
+      esCuenta: tab === 'cuenta',
+
+      autos: [
+        { icon: this.vehicleIcon('auto', 28), wrap: 'position:absolute;left:0;top:270px;animation:noerCarX 34s linear infinite' },
+        { icon: this.vehicleIcon('moto', 26), wrap: 'position:absolute;left:0;top:548px;animation:noerCarXr 26s linear infinite' },
+        { icon: this.vehicleIcon('auto', 28), wrap: 'position:absolute;left:218px;top:0;animation:noerCarY 40s linear infinite' },
+        { icon: this.vehicleIcon('furgon', 28), wrap: 'position:absolute;left:348px;top:0;animation:noerCarY 46s linear infinite 6s' }
+      ].map(a => ({ icon: a.icon, wrap: a.wrap, iconStyle: 'display:flex' })),
+
+      homeTitulo: envio ? '¿Qué mandás hoy?' : '¿Salimos?',
+      homePlaceholder: envio ? '¿A dónde lo llevamos?' : (s.voiceListening ? 'Escuchando…' : '¿A dónde vas?'),
+      onHomeVoiceSearch: () => this.startVoiceSearch(true),
+      homeMicButtonStyle: (s.simple
+        ? 'position:relative;width:46px;height:46px;flex:none;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s ease;'
+          + (s.voiceListening ? 'background:#E5203D;color:#fff' : 'background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F)')
+        : 'position:relative;width:58px;height:58px;flex:none;border:none;border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s ease;'
+          + (s.voiceListening ? 'background:#E5203D;color:#fff' : 'background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F)')),
+      homeMicPulseStyle: 'position:absolute;inset:-8px;border-radius:' + (s.simple ? '50%' : '18px') + ';background:#E5203D;'
+        + (s.voiceListening ? 'animation:noerPulse 1.1s ease-out infinite' : 'display:none'),
+      ctaConfirmar: (programado
+        ? (envio ? 'Programar encomienda · ' : 'Programar viaje · ')
+        : (envio ? 'Confirmar encomienda · ' : 'Confirmar viaje · ')) + sel.precio,
+      tabViajeStyle: this.chip(!envio, s.dark),
+      tabEnvioStyle: this.chip(envio, s.dark),
+      setViaje: () => this.setState({ servicio: 'viaje', vehiculo: 'auto' }),
+      setEnvio: () => this.setState({ servicio: 'encomienda', vehiculo: 'moto' }),
+
+      irDestino: () => this.closeAll({ screen: 'destino', query: '' }),
+      irCasa: () => this.pickDestino('Chacabuco 1932'),
+      irTrabajo: () => this.pickDestino('Av. Rivadavia 250'),
+      volver: () => this.closeAll({
+        screen: s.screen === 'opciones' ? (envio ? 'paquete' : 'destino')
+          : (s.screen === 'paquete' || s.screen === 'mapaPick' || s.screen === 'confirmarSimple') ? 'destino' : 'home'
+      }),
+      origen: s.origen,
+      destino: s.destino || 'Destino',
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      queryPlaceholder: s.voiceListening ? 'Escuchando…' : (envio ? '¿A dónde lo llevamos?' : '¿A dónde vas?'),
+      sinResultados: s.screen === 'destino' && !!q && lista.length === 0,
+      onVoiceSearch: () => this.startVoiceSearch(),
+      micButtonStyle: 'position:relative;width:34px;height:34px;border:none;border-radius:50%;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s ease;'
+        + (s.voiceListening ? 'background:#E5203D;color:#fff' : 'background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F)'),
+      micPulseStyle: 'position:absolute;inset:-6px;border-radius:50%;background:#E5203D;'
+        + (s.voiceListening ? 'animation:noerPulse 1.1s ease-out infinite' : 'display:none'),
+      sugerencias: lista.map(l => ({ nombre: l.nombre, zona: l.zona, pick: () => this.pickDestino(l.nombre) })),
+
+      opciones: precios.map(p => ({
+        nombre: p.nombre, detalle: p.detalle, precio: p.precio, eta: p.eta,
+        icon: (p.id === 'auto' || p.id === 'moto' || p.id === 'furgon') ? this.vehicleIcon(p.id, 24) : this.ico(p.path, 22), iconStyle: 'display:flex',
+        pick: () => this.setState({ vehiculo: p.id }),
+        style: 'display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;cursor:pointer;transition:background .18s ease;color:var(--nink,#061A0F);'
+          + (p.id === sel.id
+            ? 'border:1.5px solid var(--nink,#061A0F);background:var(--nbrandsoft,#E6FFF0)'
+            : 'border:1px solid var(--nline,rgba(6,26,15,.1));background:transparent')
+      })),
+
+      abiertoPrecio: s.open.precio,
+      togglePrecio: () => this.toggle('precio'),
+      caretPrecio: this.caret(s.open.precio),
+      desglose: desglose,
+
+      abiertoProgramar: s.open.programar,
+      toggleProgramar: () => this.toggle('programar'),
+      caretProgramar: this.caret(s.open.programar),
+      programarResumen: resumen,
+      ctaProgramar: 'Programar para ' + diaLabel + ' ' + s.hora,
+      dias: [
+        { label: 'Hoy · vie 12', pick: () => this.setState({ dia: 'hoy' }), style: this.pill(s.dia === 'hoy') },
+        { label: 'Mañana · sáb 13', pick: () => this.setState({ dia: 'manana' }), style: this.pill(s.dia === 'manana') }
+      ],
+      horarios: slots.map(h => ({ label: h, pick: () => this.setState({ hora: h }), style: this.slot(s.hora === h, s.dark) })),
+      confirmarProgramar: () => this.setState(st => ({ cuando: 'programado', open: Object.assign({}, st.open, { programar: false }) })),
+      ahoraStyle: this.pill(s.cuando === 'ahora'),
+      programadoStyle: this.pill(s.cuando === 'programado'),
+      setAhora: () => this.setState({ cuando: 'ahora' }),
+
+      pago: this.pagos[s.pagoIdx],
+      cambiarPago: () => this.setState({ pagoIdx: (s.pagoIdx + 1) % this.pagos.length }),
+      confirmar: this.confirmar,
+      cancelar: () => this.setState({ confirmCancel: true }),
+      nuevoPedido: this.reset,
+      ctaFin: s.rating > 0 ? 'Enviar calificación' : 'Omitir y cerrar',
+      ctaFinStyle: 'width:100%;height:54px;border:none;border-radius:18px;cursor:pointer;font:700 16px/1 Outfit,sans-serif;'
+        + (s.rating > 0 ? 'background:#52FF9C;color:#00230D' : 'background:var(--nchip,#F2F6F3);color:var(--nink,#061A0F)'),
+      avanzar: this.avanzar,
+      ctaAvanzar: s.viajeFase === 0 ? (programado ? 'Empezar viaje' : 'Ya subí') : 'Finalizar',
+      estadoViaje: s.viajeFase === 0
+        ? (s.cuando === 'programado' ? 'Chofer reservado ' + diaLabel.toLowerCase() + ' ' + s.hora : 'Tu chofer está en camino')
+        : 'En viaje hacia el destino',
+      etaViaje: s.viajeFase === 0 ? '4 min' : '9 min',
+      precioFinal: sel.precio,
+
+      abiertoChofer: s.open.chofer,
+      toggleChofer: () => this.toggle('chofer'),
+      caretChofer: this.caret(s.open.chofer),
+      datosChofer: [
+        { label: 'Chofer', valor: 'Juan Carlos R.' },
+        { label: 'Habilitación de remis', valor: 'Vigente · Nogoyá' },
+        { label: 'Licencia', valor: 'Verificada' },
+        { label: 'Seguro del vehículo', valor: 'Al día' },
+        { label: 'Vehículo', valor: 'Fiat Cronos gris 2021' },
+        { label: 'Patente', valor: 'AB 123 CD' }
+      ],
+
+      abiertoEstado: s.open.estado,
+      toggleEstado: () => this.toggle('estado'),
+      caretEstado: this.caret(s.open.estado),
+      pasos: pasosDef.map((p, i) => ({
+        label: p.label, hora: p.hora,
+        dot: 'width:11px;height:11px;border-radius:50%;flex:none;margin-top:4px;background:'
+          + (i < activo ? 'var(--nlink,#0A7A3F)' : (i === activo ? '#52FF9C' : 'var(--nline2,rgba(6,26,15,.18))'))
+          + (i === activo ? ';box-shadow:0 0 0 4px rgba(82,255,156,.28)' : ''),
+        line: 'width:2px;flex:1;background:' + (i < activo ? 'var(--nlink,#0A7A3F)' : 'var(--nline2,rgba(6,26,15,.18))')
+          + (i === pasosDef.length - 1 ? ';display:none' : ''),
+        titulo: 'font:' + (i === activo ? '700' : '500') + ' 14px/1.25 Outfit,sans-serif;color:var(--nink,#061A0F)'
+      })),
+
+      estrellas: [1, 2, 3, 4, 5].map(n => ({
+        pick: () => this.setState({ rating: n }),
+        style: 'width:44px;height:44px;border:none;border-radius:14px;cursor:pointer;font-size:22px;line-height:1;transition:background .15s ease;'
+          + (n <= s.rating ? 'background:#52FF9C;color:#00230D' : 'background:var(--nchip,#F2F6F3);color:var(--nmut,#5A6E62)')
+      })),
+
+      abiertoComo: s.open.como,
+      toggleComo: () => this.toggle('como'),
+      caretComo: this.caret(s.open.como),
+      comoFunciona: [
+        { n: '1', titulo: 'Pedí tu viaje o encomienda', texto: 'Elegí origen y destino en el mapa de Nogoyá.' },
+        { n: '2', titulo: 'Mirá el precio antes de confirmar', texto: 'Sin sorpresas al llegar: el total se cierra al confirmar.' },
+        { n: '3', titulo: 'Seguí a tu chofer en el mapa', texto: 'En tiempo real, con sus datos y su patente a mano.' },
+        { n: '4', titulo: 'Pagá como quieras', texto: 'Efectivo, Mercado Pago o saldo NoER.' }
+      ],
+
+      pedidos: [
+        { tipo: 'AUTO', destino: 'Chacabuco 1932', fecha: 'Hoy 20:06', pago: 'Efectivo', estado: 'Completado', precio: '$ 5.429', tono: 'ok' },
+        { tipo: 'ENVÍO', destino: 'Quiroga y Taboada 1398', fecha: 'Ayer 12:21', pago: 'Saldo NoER', estado: 'Completado', precio: '$ 2.900', tono: 'ok' },
+        { tipo: 'AUTO', destino: 'Allende 3150', fecha: '8/9 09:40', pago: 'Efectivo', estado: 'Cancelado', precio: '$ 0', tono: 'err' },
+        { tipo: 'MOTO', destino: 'Terminal de Ómnibus', fecha: '2/9 18:02', pago: 'Mercado Pago', estado: 'Programado', precio: '$ 3.100', tono: 'warn' }
+      ].map((p, i) => ({
+        tipo: p.tipo, destino: p.destino, fecha: p.fecha, pago: p.pago, estado: p.estado, precio: p.precio,
+        abierto: s.pedidoAbierto === i,
+        caret: this.caret(s.pedidoAbierto === i),
+        toggle: () => this.setState({ pedidoAbierto: s.pedidoAbierto === i ? null : i, reclamoMotivo: '' }),
+        filas: [
+          { label: 'Origen', valor: 'Mi ubicación' },
+          { label: 'Destino', valor: p.destino },
+          { label: 'Chofer', valor: 'Juan Carlos R. · AB 123 CD' },
+          { label: 'Pago', valor: p.pago + ' · ' + p.precio }
+        ],
+        enviado: s.enviados.indexOf(i) >= 0,
+        comprobante: comprobanteDe({
+          nro: 'NR-2026-00' + (i + 1), fecha: p.fecha, total: p.precio, pago: p.pago,
+          filas: [
+            { label: 'Origen', valor: 'Mi ubicación' },
+            { label: 'Destino', valor: p.destino },
+            { label: 'Chofer', valor: 'Juan Carlos R. · AB 123 CD' },
+            { label: 'Estado', valor: p.estado }
+          ].concat(this.desgloseDe(p.precio))
+        }),
+        pendiente: s.enviados.indexOf(i) < 0,
+        conMotivo: s.enviados.indexOf(i) < 0 && s.pedidoAbierto === i && !!s.reclamoMotivo,
+        reclamoTitulo: s.enviados.indexOf(i) >= 0 ? 'Reporte enviado' : '¿Perdiste algo o querés denunciar algo?',
+        motivos: this.motivosDef.map(m => ({
+          label: m,
+          pick: () => this.setState({ reclamoMotivo: m }),
+          style: this.slot(s.reclamoMotivo === m, s.dark)
+        })),
+        enviar: () => this.setState(st => ({ enviados: st.enviados.concat([i]), reclamoMotivo: '', reclamoTexto: '' })),
+        badge: 'align-self:flex-start;margin-top:2px;font:600 11px/1 Outfit,sans-serif;padding:5px 9px;border-radius:20px;'
+          + (p.tono === 'ok' ? 'background:var(--nbrandsoft,#E6FFF0);color:var(--nlink,#0A7A3F)'
+            : p.tono === 'err' ? 'background:rgba(229,32,61,.12);color:var(--nerr,#E5203D)'
+            : 'background:rgba(184,121,26,.14);color:var(--nwarn,#B8791A)')
+      })),
+      movimientos: s.movs.map(m => ({
+        titulo: m.titulo, fecha: m.fecha, monto: m.monto,
+        style: 'font:700 14.5px/1 Outfit,sans-serif;color:' + (m.entra ? 'var(--nlink,#0A7A3F)' : 'var(--nink,#061A0F)')
+      })),
+      avisos: [
+        { titulo: 'Tu viaje terminó', texto: 'Calificá a Juan Carlos y ayudanos a mejorar el servicio.', fecha: 'Hoy 20:32', tono: 'ok' },
+        { titulo: 'Nueva promo', texto: '50% off en tus próximos 5 viajes dentro de Nogoyá.', fecha: 'Hoy 10:10', tono: 'info' },
+        { titulo: 'Cambio de chofer', texto: 'El chofer asignado canceló y ya te asignamos otro. No tenés que hacer nada.', fecha: 'Ayer 15:30', tono: 'warn' }
+      ].map(a => ({
+        titulo: a.titulo, texto: a.texto, fecha: a.fecha,
+        style: 'padding:16px;border-radius:18px;margin-bottom:10px;background:'
+          + (a.tono === 'warn' ? 'rgba(184,121,26,.10)' : a.tono === 'ok' ? 'var(--nbrandsoft,#E6FFF0)' : 'var(--nchip,#F2F6F3)'),
+        dot: 'width:8px;height:8px;border-radius:50%;flex:none;background:'
+          + (a.tono === 'warn' ? 'var(--nwarn,#B8791A)' : a.tono === 'ok' ? 'var(--nlink,#0A7A3F)' : 'var(--nmut,#5A6E62)')
+      })),
+      ajustes: [
+        {
+          label: 'Direcciones guardadas', cta: 'Agregar dirección',
+          filas: [
+            { titulo: 'Casa', texto: 'Chacabuco 1932 · Barrio Maipú', accion: 'Editar' },
+            { titulo: 'Trabajo', texto: 'Av. Rivadavia 250 · Centro', accion: 'Editar' },
+            { titulo: 'Casa de mamá', texto: 'Alberdi 1150', accion: 'Editar' }
+          ]
+        },
+        {
+          label: 'Medios de pago', cta: 'Cargar saldo',
+          filas: [
+            { titulo: 'Efectivo', texto: 'Le pagás al chofer al bajar', accion: 'Predeterminado' },
+            { titulo: 'Saldo NoER', texto: this.money(s.saldo) + ' disponibles', accion: 'Usar' },
+            { titulo: 'Mercado Pago', texto: 'Cuenta +54 9 343 546-2568', accion: 'Vincular' }
+          ]
+        },
+        {
+          label: 'Soporte y reclamos', cta: 'Escribir por WhatsApp',
+          filas: [
+            { titulo: 'Reclamo por cobro', texto: 'Abierto el 8/9 · en revisión', accion: 'Ver' },
+            { titulo: 'Objeto perdido', texto: 'Resuelto el 2/9', accion: 'Ver' },
+            { titulo: 'Atención', texto: 'Lunes a domingo, de 7 a 24 h', accion: '' }
+          ]
+        },
+        {
+          label: 'Política de privacidad', cta: 'Leer la política completa',
+          filas: [
+            { titulo: 'Ubicación', texto: 'Se usa solo durante el viaje para asignar chofer.', accion: '' },
+            { titulo: 'Datos del viaje', texto: 'Se guardan 12 meses para soporte y reclamos.', accion: '' },
+            { titulo: 'Nunca vendemos tus datos', texto: 'No compartimos tu teléfono con terceros.', accion: '' }
+          ]
+        }
+      ].map(a => ({
+        label: a.label, cta: a.cta, filas: a.filas,
+        onCta: () => {
+          if (a.label === 'Medios de pago') { this.setState({ tab: 'billetera' }); return; }
+          if (a.label === 'Soporte y reclamos') { window.open('https://wa.me/543435551234', '_blank'); return; }
+          this.showToast(a.cta + ' · próximamente en esta demo');
+        },
+        abierto: s.cuentaAbierto === a.label,
+        caret: this.caret(s.cuentaAbierto === a.label),
+        toggle: () => this.setState({ cuentaAbierto: s.cuentaAbierto === a.label ? null : a.label })
+      })),
+      switchStyle: 'width:52px;height:30px;border:none;border-radius:16px;cursor:pointer;display:flex;align-items:center;padding:3px;transition:background .2s ease;'
+        + (s.dark ? 'background:#52FF9C;justify-content:flex-end' : 'background:rgba(6,26,15,.18);justify-content:flex-start'),
+      knobStyle: 'width:24px;height:24px;border-radius:50%;background:' + (s.dark ? '#00230D' : '#fff') + ';box-shadow:0 1px 4px rgba(0,0,0,.25);display:block',
+
+      tabs: this.tabDefs.filter(t => !s.simple || ['inicio', 'pedidos', 'cuenta'].indexOf(t.id) !== -1).map(t => ({
+        label: t.label,
+        icon: this.ico(t.d, s.simple ? 27 : 22, tab === t.id ? 2.2 : 1.7),
+        badge: t.id === 'avisos' && s.noLeidos > 0,
+        badgeCount: String(s.noLeidos),
+        pick: () => this.setState(t.id === 'avisos' ? { tab: t.id, noLeidos: 0 } : { tab: t.id }),
+        style: 'flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border:none;background:transparent;cursor:pointer;transition:color .18s ease;'
+          + (tab === t.id ? 'color:var(--nink,#061A0F)' : 'color:var(--nmut,#5A6E62)')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
